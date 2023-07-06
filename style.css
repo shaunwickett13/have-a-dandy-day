@@ -1,3 +1,49 @@
+/*region CSS Reset*/
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+/*endregion*/
+
 :root {
 	--color1-hex: #4685e5;
 	--color1-rgb: 70, 133, 229;
@@ -20,38 +66,77 @@
 html {
 	background-color: var(--color2-hex);
 }
+
 body {
 	font-family: "Comfortaa", sans-serif;
 	overflow: hidden;
 	height: 100vh;
-}
-
-main {
-	width: 100%;
-	height: 100%;
+	width: 100vw;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	flex-direction: row;
 	text-align: center;
-	background-size: 40px 40px;
-	background-image: linear-gradient(to right, grey 1px, transparent 1px), linear-gradient(to bottom, grey 1px, transparent 1px);
+}
+
+.background-container {
+	display: flex;
+	flex-direction: column;
+	align-self: start;
+	align-items: center;
+	justify-items: center;
+	justify-content: center;
+	backdrop-filter: blur(5px);
+	padding: 1rem;
+	z-index: 4;
+}
+
+#splash {
+	background-color: rgba(0, 0, 0, 1);
+	width: 100vw;
+	height: 100vh;
+	position: absolute;
+}
+
+body.active #splash {
+	display: none;
+}
+
+#hello {
+	color: white;
+	font-size: 6rem;
+	margin-bottom: 2rem;
+}
+
+#start-button {
+	font: inherit;
+	cursor: pointer;
+	outline: inherit;
+	font-size: 2.5rem;
+	font-weight: normal;
+	padding: 1.5rem;
+	border-radius: 15px;
+	color: black;
+	pointer-events: auto;
 }
 
 #main-text {
+	width: 100vw;
+	min-height: 25vh;
+	animation: rainbow 10s ease-in-out infinite alternate;
+	transition: transform 1s ease-in-out;
+	transform: translateY(-100%);
+}
+
+body.active #main-text {
+	transform: translateY(0);
+}
+
+#greeting {
 	font-size: 6rem;
 	font-weight: bold;
-	text-shadow: 0 0 5px black;
-	z-index: 3;
-	align-self: start;
-	margin-top: 2rem;
-	padding: 2rem;
-	border-radius: 10px;
-	backdrop-filter: blur(5px);
-	box-shadow: 0 0 10px black;
-	margin-left: 10px;
-	margin-right: 10px;
-	animation: rainbow 15s ease-in-out infinite alternate;
+	width: 100%;
+	padding: .75rem;
 }
 
 #dandy-dan {
@@ -67,33 +152,53 @@ main {
 	justify-content: center;
 	overflow: hidden;
 	z-index: 3;
+	transition: transform 1s ease-in-out;
+	transform: translateY(100%);
+}
+
+body.active #dandy-dan {
+	transform: translateY(0);
 }
 
 #dandy-dan > img {
 	height: 100%;
-	filter: drop-shadow(0 0 10px black);
 }
 
-.wiggle {
-	animation: wiggle .5s ease-in-out infinite alternate;
+.dance {
+	animation: dance .2s ease-in-out infinite alternate;
 	transform-origin: bottom;
 }
 
 main.error {
 	background-color: rgba(var(--color4-rgb), 0.80);
+	flex-direction: column;
 }
 
+main.error > h1 {
+	font-weight: bold;
+	font-size: 6rem;
+	padding: 2rem;
+}
+
+main.error > h4 {
+	font-size: 2rem;
+	padding: 1rem;
+}
+
+main.error > p {
+	font-style: italic;
+}
 
 .shimmer {
 	text-align: center;
-	background: -webkit-gradient(linear, left top, right top, from(#222), to(#222), color-stop(0.5, white));
-	background: -moz-gradient(linear, left top, right top, from(#222), to(#222), color-stop(0.5, white));
-	background: gradient(linear, left top, right top, from(#222), to(#222), color-stop(0.5, white));
-	background-size: 125px 100%;
+	background: -webkit-gradient(linear, left top, right top, from(#222), to(#222), color-stop(0.5, silver));
+	background: -moz-gradient(linear, left top, right top, from(#222), to(#222), color-stop(0.5, silver));
+	background: gradient(linear, left top, right top, from(#222), to(#222), color-stop(0.5, silver));
+	background-size: 75px 125%;
 	-webkit-background-clip: text;
 	-moz-background-clip: text;
 	background-clip: text;
-	animation: shimmer 3s ease-in-out infinite alternate;
+	animation: shimmer 2s ease infinite;
 	background-repeat: no-repeat;
 	background-position: 0 0;
 	background-color: #222;
@@ -144,21 +249,27 @@ main.error {
 	100% { width: var(--finalSize); opacity: 0; }
 }
 
-
-
 /* @keyframes fireworkPseudo {
   0% { transform: translate(-50%, -50%); width: var(--initialSize); opacity: 1; }
   50% { width: 0.5vmin; opacity: 1; }
   100% { width: var(--finalSize); opacity: 0; }
 }
  */
+
+
+body.active .firework,
+body.active .firework::before,
+body.active .firework::after {
+	animation-play-state: running;
+}
+
 .firework,
 .firework::before,
 .firework::after
 {
 	--initialSize: 0.5vmin;
-	--finalSize: 65vmin;
-	--particleSize: 0.2vmin;
+	--finalSize: 85vmin;
+	--particleSize: 1vmin;
 	--color1: yellow;
 	--color2: khaki;
 	--color3: white;
@@ -171,6 +282,7 @@ main.error {
 	overflow: hidden;
 	content: "";
 	animation: firework 2s infinite;
+	animation-play-state: paused;
 	position: absolute;
 	top: 50%;
 	left: 50%;
@@ -250,6 +362,7 @@ main.error {
 
 .firework:nth-child(2) {
 	--x: 30vmin;
+	--y: -40vmin;
 }
 
 .firework:nth-child(2),
@@ -365,12 +478,14 @@ main.error {
 	}
 }
 
-@keyframes wiggle {
+@keyframes dance {
 	0% {
-		transform: rotate(3deg)  translateY(10px);
+		/*transform: rotate(3deg)  translateY(10px);*/
+		transform: translateY(5px);
 	}
 	100% {
-		transform: rotate(-3deg) translateY(10px);
+		/*transform: rotate(-3deg) translateY(10px);*/
+		transform: translateY(-5px);
 	}
 }
 
@@ -422,26 +537,34 @@ main.error {
 }
 
 @media screen and (max-width: 1000px) {
-	#main-text {
+	#greeting {
 		font-size: 5rem;
 	}
 
+	#hello {
+		font-size: 5rem;
+	}
+
+	#start-button {
+		font-size: 2.25rem;
+	}
 }
 
 @media screen and (max-width: 750px) {
-	#main-text {
+	#greeting {
 		font-size: 4rem;
-		padding: 1rem;
 	}
 
 	#dandy-dan {
 		height: 70vh;
 	}
-}
 
-@media screen and (max-width: 500px) {
-	#dandy-dan {
-		height: 65vh;
+	#hello {
+		font-size: 4rem;
+	}
+
+	#start-button {
+		font-size: 1.75rem;
 	}
 }
 

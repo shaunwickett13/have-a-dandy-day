@@ -309,13 +309,6 @@ body.active .firework::after {
 	aspect-ratio: 1;
 	z-index: 2;
 	background:
-		/*
-        radial-gradient(circle, var(--color1) var(--particleSize), #0000 0) 0% 0%,
-        radial-gradient(circle, var(--color1) var(--particleSize), #0000 0) 100% 0%,
-        radial-gradient(circle, var(--color1) var(--particleSize), #0000 0) 100% 100%,
-        radial-gradient(circle, var(--color1) var(--particleSize), #0000 0) 0% 100%,
-        */
-
 			radial-gradient(circle, var(--color1) var(--particleSize), #0000 0) 50% 0%,
 			radial-gradient(circle, var(--color2) var(--particleSize), #0000 0) 100% 50%,
 			radial-gradient(circle, var(--color3) var(--particleSize), #0000 0) 50% 100%,
@@ -360,6 +353,12 @@ body.active .firework::after {
 	background-repeat: no-repeat;
 }
 
+.firework.hide,
+.firework.hide::before,
+.firework.hide::after {
+	display: none !important;
+}
+
 .firework::before {
 	--x: -50%;
 	--y: -50%;
@@ -375,7 +374,7 @@ body.active .firework::after {
 }
 
 .firework.f1 {
-	--y: -40vmin;
+	--y: -40vh;
 	--x: -50%;
 }
 
@@ -388,15 +387,15 @@ body.active .firework::after {
 	--color4: lime;
 	--color5: gold;
 	--color6: mediumseagreen;
-	--finalSize: 40vmin;
+	--finalSize: 50vmin;
 	left: 30%;
 	top: 60%;
 	animation-delay: 0s;
 }
 
 .firework.f2 {
-	--x: 30vmin;
-	--y: -40vmin;
+	--x: 30vh;
+	--y: -40vh;
 }
 
 .firework.f2,
@@ -415,8 +414,8 @@ body.active .firework::after {
 }
 
 .firework.f3 {
-	--x: -30vmin;
-	--y: -50vmin;
+	--x: -30vh;
+	--y: -50vh;
 }
 
 .firework.f3,
@@ -435,8 +434,8 @@ body.active .firework::after {
 }
 
 .firework.f4 {
-	--x: 30vmin;
-	--y: -80vmin;
+	--x: 30vh;
+	--y: -80vh;
 }
 
 .firework.f4,
@@ -455,8 +454,8 @@ body.active .firework::after {
 }
 
 .firework.f5 {
-	--x: 10vmin;
-	--y: 10vmin;
+	--x: 10vh;
+	--y: 10vh;
 }
 
 .firework.f5,
@@ -475,8 +474,8 @@ body.active .firework::after {
 }
 
 .firework.f6 {
-	--x: -40vmin;
-	--y: -45vmin;
+	--x: -40vh;
+	--y: -45vh;
 }
 
 .firework.f6,
@@ -492,6 +491,46 @@ body.active .firework::after {
 	left: 80%;
 	top: 80%;
 	animation-delay: 0.35s;
+}
+
+.firework.f7 {
+	--x: -30vh;
+	--y: -15vh;
+}
+
+.firework.f7,
+.firework.f7::before,
+.firework.f7::after {
+	--color1: pink;
+	--color2: violet;
+	--color3: fuchsia;
+	--color4: orchid;
+	--color5: plum;
+	--color6: lavender;
+	--finalSize: 40vmin;
+	left: 80%;
+	top: 80%;
+	animation-delay: 0.2s;
+}
+
+.firework.f8 {
+	--x: 0vh;
+	--y: -15vh;
+}
+
+.firework.f8,
+.firework.f8::before,
+.firework.f8::after {
+	--color1: yellow;
+	--color2: gold;
+	--color3: DarkOrange;
+	--color4: GoldenRod;
+	--color5: Khaki;
+	--color6: LemonChiffon;
+	--finalSize: 60vmin;
+	left: 50%;
+	top: 50%;
+	animation-delay: 0.5s;
 }
 
 @keyframes slide {
@@ -590,5 +629,114 @@ body.active .firework::after {
 	#start-button {
 		font-size: 1.75rem;
 	}
+
+	.firework.f1 {
+		--y: -40vh;
+		--x: 20vw;
+	}
+
+	.firework.f1,
+	.firework.f1::before,
+	.firework.f1::after {
+		--finalSize: 60vmin;
+		left: -10%;
+		top: 60%;
+	}
+
+	.firework.f2 {
+		--y: -40vh;
+		--x: 30vw;
+	}
+
+	.firework.f2,
+	.firework.f2::before,
+	.firework.f2::after {
+		--finalSize: 40vmin;
+		left: 20%;
+		top: 40%;
+	}
+
+	.firework.f3 {
+		--y: -30vh;
+		--x: -30vw;
+	}
+
+	.firework.f3,
+	.firework.f3::before,
+	.firework.f3::after {
+		--finalSize: 80vmin;
+		left: 110%;
+		top: 50%;
+	}
+
+
+	.firework.f4 {
+		--x: -30vh;
+		--y: -90vh;
+	}
+
+	.firework.f4,
+	.firework.f4::before,
+	.firework.f4::after {
+		--finalSize: 40vmin;
+		left: 90%;
+		top: 90%;
+	}
+
+	.firework.f5 {
+		--x: 10vh;
+		--y: 10vh;
+	}
+
+	.firework.f5,
+	.firework.f5::before,
+	.firework.f5::after {
+		--finalSize: 50vmin;
+		left: 20%;
+		top: 45%;
+		animation-delay: 0.1s;
+	}
+
+	.firework.f6 {
+		--x: -40vh;
+		--y: -45vh;
+	}
+
+	.firework.f6,
+	.firework.f6::before,
+	.firework.f6::after {
+		--finalSize: 35vmin;
+		left: 100%;
+		top: 100%;
+		animation-delay: 0.55s;
+	}
+
+	.firework.f7 {
+		--x: 0vh;
+		--y: -95vh;
+	}
+
+	.firework.f7,
+	.firework.f7::before,
+	.firework.f7::after {
+		--finalSize: 85vmin;
+		left: 50%;
+		top: 100vh;
+	}
+
+	.firework.f8 {
+		--x: 0vh;
+		--y: 0vh;
+	}
+
+	.firework.f8,
+	.firework.f8::before,
+	.firework.f8::after {
+		--finalSize: 60vmin;
+		left: 80%;
+		top: 50%;
+		animation-delay: 0s;
+	}
+
 }
 

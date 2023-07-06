@@ -53,7 +53,7 @@
                     } else if (counter === 2) {
                         buttonText = "click again for even more well wishes"
                     } else {
-                        buttonText = "continue clicking and collect as many well wishes as you want"
+                        buttonText = "continue clicking for as many well wishes as you want"
                     }
                     document.querySelector("#start-button").innerText = buttonText
                     document.querySelector("body").classList.remove("active")
@@ -68,24 +68,23 @@
     <div id="top-panel" class="background-container">
         <h1 id="greeting" class="shimmer">Have A Dandy Day!</h1>
     </div>
+    <div id="splash" class="background-container">
+        <button id="start-button" onclick="DandyDayController.start()">click to receive well wishes</button>
+    </div>
+    <div id="dandy-dan">
+        <img class="dance" src="image/smile.png" alt="A smiling man wearing a bowling hat, a rainbow plaid blazer, and a fake moustache gives two thumbs up.">
+    </div>
     <div id="bottom-panel" class="background-container">
         <p>
             "<span id="quote">The day is looking to be quite dandy indeed!</span>" - Dandy Dan
         </p>
     </div>
-
-    <div id="splash" class="background-container">
-        <button id="start-button" onclick="DandyDayController.start()">click for well wishes</button>
-    </div>
-    <div id="dandy-dan">
-        <img class="dance" src="image/smile.png" alt="A smiling man wearing a bowling hat, a rainbow plaid blazer, and a fake moustache gives two thumbs up.">
-    </div>
-    <div class="firework"></div>
-    <div class="firework"></div>
-    <div class="firework"></div>
-    <div class="firework"></div>
-    <div class="firework"></div>
-    <div class="firework"></div>
+    <div class="firework f1"></div>
+    <div class="firework f2"></div>
+    <div class="firework f3"></div>
+    <div class="firework f4"></div>
+    <div class="firework f5"></div>
+    <div class="firework f6"></div>
     <div class="bg right"></div>
     <div class="bg right bg2"></div>
     <div class="bg right bg3"></div>

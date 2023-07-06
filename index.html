@@ -6,6 +6,8 @@
     <meta name="keywords" content="dandy, day, positivity, greetings, well wishes" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    <meta name="theme-color" content="#000000" />
+
     <meta property="og:title" content="Have A Dandy Day!" />
     <meta property="og:url" content="https://haveadandyday.com" />
     <meta property="og:type" content="website" />
@@ -29,28 +31,30 @@
 
     <script>
         const DandyDayController = (function() {
-            let playCounter = 0;
-
+            const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+            let counter = 0;
+            const quotes = [
+                "The day is looking to be quite dandy indeed!",
+                `When it comes to the dandiest day of the week, you can't beat ${weekday[new Date().getDay()]}s.`,
+            ].map(value => ({ value, sort: Math.random() }))
+                .sort((a, b) => a.sort - b.sort)
+                .map(({ value }) => value)
             return {
                 start: function () {
                     document.querySelector("body").classList.add("active")
                     const jingle = document.querySelector("#jingle")
-                    playCounter++
+                    counter++
                     jingle.play();
                 },
                 stop: function () {
-                    let helloText, buttonText;
-                    if (playCounter === 1) {
-                        helloText = "You're back!"
+                    let buttonText;
+                    if (counter === 1) {
                         buttonText = "click again for more well wishes"
-                    } else if (playCounter === 2) {
-                        helloText = "Glad you're still here!"
-                        buttonText = "click once more for even more well wishes"
+                    } else if (counter === 2) {
+                        buttonText = "click again for even more well wishes"
                     } else {
-                        helloText = "You deserve the dandiest day!"
-                        buttonText = "click as many times as you want!"
+                        buttonText = "continue clicking and collect as many well wishes as you want"
                     }
-                    document.querySelector("#hello").innerText = helloText
                     document.querySelector("#start-button").innerText = buttonText
                     document.querySelector("body").classList.remove("active")
                 }
@@ -61,11 +65,16 @@
     <title>Have A Dandy Day!</title>
 </head>
 <body>
-    <div id="main-text" class="background-container">
+    <div id="top-panel" class="background-container">
         <h1 id="greeting" class="shimmer">Have A Dandy Day!</h1>
     </div>
+    <div id="bottom-panel" class="background-container">
+        <p>
+            "<span id="quote">The day is looking to be quite dandy indeed!</span>" - Dandy Dan
+        </p>
+    </div>
+
     <div id="splash" class="background-container">
-        <h1 id="hello">Hello!</h1>
         <button id="start-button" onclick="DandyDayController.start()">click for well wishes</button>
     </div>
     <div id="dandy-dan">

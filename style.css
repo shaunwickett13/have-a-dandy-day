@@ -73,16 +73,15 @@ body {
 	height: 100vh;
 	width: 100vw;
 	display: flex;
+	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	flex-direction: row;
 	text-align: center;
 }
 
 .background-container {
 	display: flex;
 	flex-direction: column;
-	align-self: start;
 	align-items: center;
 	justify-items: center;
 	justify-content: center;
@@ -92,43 +91,64 @@ body {
 }
 
 #splash {
-	background-color: rgba(0, 0, 0, 1);
+	background-color: rgba(0, 0, 0, .75);
 	width: 100vw;
 	height: 100vh;
 	position: absolute;
+	backdrop-filter: blur(15px);
+	transition: backdrop-filter 0.25s ease-in-out, background-color 1s ease-in-out;
 }
 
 body.active #splash {
-	display: none;
-}
-
-#hello {
-	color: white;
-	font-size: 6rem;
-	margin-bottom: 2rem;
+	backdrop-filter: blur(0px);
+	background-color: rgba(0, 0, 0, 0);
 }
 
 #start-button {
 	font: inherit;
 	cursor: pointer;
-	outline: inherit;
+	outline: none;
 	font-size: 2.5rem;
 	font-weight: normal;
 	padding: 1.5rem;
 	border-radius: 15px;
-	color: black;
-	pointer-events: auto;
+	border: 2px solid gainsboro;
+	color: gainsboro;
+	background-color: var(--color2-hex);
+	transition: opacity 0.25s ease-in-out;
+	opacity: 1;
 }
 
-#main-text {
+body.active #start-button {
+	opacity: 0;
+}
+
+#top-panel {
+	align-self: start;
 	width: 100vw;
 	min-height: 25vh;
 	animation: rainbow 10s ease-in-out infinite alternate;
 	transition: transform 1s ease-in-out;
 	transform: translateY(-100%);
+	margin-bottom: auto;
 }
 
-body.active #main-text {
+body.active #top-panel {
+	transform: translateY(0);
+}
+
+#bottom-panel {
+	align-self: end;
+	width: 100vw;
+	min-height: 5vh;
+	animation: rainbow 10s ease-in-out infinite alternate;
+	transition: transform 1s ease-in-out;
+	transform: translateY(100%);
+	margin-top: auto;
+	font-style: italic;
+}
+
+body.active #bottom-panel {
 	transform: translateY(0);
 }
 
@@ -261,6 +281,7 @@ body.active .firework,
 body.active .firework::before,
 body.active .firework::after {
 	animation-play-state: running;
+	display: initial;
 }
 
 .firework,
@@ -283,6 +304,7 @@ body.active .firework::after {
 	content: "";
 	animation: firework 2s infinite;
 	animation-play-state: paused;
+	display: none;
 	position: absolute;
 	top: 50%;
 	left: 50%;
@@ -541,10 +563,6 @@ body.active .firework::after {
 		font-size: 5rem;
 	}
 
-	#hello {
-		font-size: 5rem;
-	}
-
 	#start-button {
 		font-size: 2.25rem;
 	}
@@ -552,15 +570,11 @@ body.active .firework::after {
 
 @media screen and (max-width: 750px) {
 	#greeting {
-		font-size: 4rem;
+		font-size: 3rem;
 	}
 
 	#dandy-dan {
 		height: 70vh;
-	}
-
-	#hello {
-		font-size: 4rem;
 	}
 
 	#start-button {

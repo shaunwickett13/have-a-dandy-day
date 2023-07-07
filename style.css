@@ -70,13 +70,10 @@ html {
 body {
 	font-family: "Comfortaa", sans-serif;
 	overflow: hidden;
-	height: 100vh;
+	/*height: calc(var(--vh, 1vh) * 100);*/
+	height: 100dvh;
 	width: 100vw;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	text-align: center;
+	background-color: var(--color2-hex);
 }
 
 .background-container {
@@ -85,6 +82,7 @@ body {
 	align-items: center;
 	justify-items: center;
 	justify-content: center;
+	-webkit-backdrop-filter: blur(5px);
 	backdrop-filter: blur(5px);
 	padding: 1rem;
 	z-index: 4;
@@ -93,13 +91,16 @@ body {
 #splash {
 	background-color: rgba(0, 0, 0, .75);
 	width: 100vw;
-	height: 100vh;
+	/*height: calc(var(--vh, 1vh) * 100);*/
+	height: 100dvh;
 	position: absolute;
+	-webkit-backdrop-filter: blur(15px);
 	backdrop-filter: blur(15px);
 	transition: backdrop-filter 0.25s ease-in-out, background-color 1s ease-in-out;
 }
 
 body.active #splash {
+	-webkit-backdrop-filter: blur(0px);
 	backdrop-filter: blur(0px);
 	background-color: rgba(0, 0, 0, 0);
 }
@@ -127,31 +128,36 @@ body.active #start-button {
 }
 
 #top-panel {
-	align-self: start;
+	position: absolute;
+	top: -200%;
 	width: 100vw;
 	min-height: 25vh;
+	text-align: center;
 	animation: rainbow 10s ease-in-out infinite alternate;
-	transition: transform 1s ease-in-out;
-	transform: translateY(-200%);
-	margin-bottom: auto;
+	transition: top 1s ease-in-out;
+	opacity: 0;
 }
 
 body.active #top-panel {
-	transform: translateY(0);
+	top: 0;
+	opacity: 1;
 }
 
 #bottom-panel {
-	align-self: end;
+	position: absolute;
+	bottom: -200%;
 	width: 100vw;
 	min-height: 5vh;
+	text-align: center;
 	animation: rainbow 10s ease-in-out infinite alternate;
-	transition: transform 1s ease-in-out;
-	transform: translateY(300%);
+	transition: bottom 1s ease-in-out;
 	font-style: italic;
+	opacity: 0;
 }
 
 body.active #bottom-panel {
-	transform: translateY(0);
+	bottom: 0;
+	opacity: 1;
 }
 
 #greeting {
@@ -161,12 +167,29 @@ body.active #bottom-panel {
 	padding: .75rem;
 }
 
+.word {
+	transition: text-shadow 0.5s ease-in-out, font-size 0.5s ease-in-out;
+	text-shadow: 0 0 5px rgba(255, 255, 255, 0.25);
+}
+
+.word.focus {
+	--glow-size: 0.2rem;
+	font-size: 100%;
+	text-shadow:
+			0 0 calc(var(--glow-size)) #fff,
+			0 0 calc(var(--glow-size) * 2) #fff,
+			0 0 calc(var(--glow-size) * 3) var(--color1-hex),
+			0 0 calc(var(--glow-size) * 4) var(--color5-hex),
+			0 0 calc(var(--glow-size) * 5) var(--color2-hex),
+			0 0 calc(var(--glow-size) * 6) var(--color6-hex),
+			0 0 calc(var(--glow-size) * 7) var(--color3-hex);
+}
+
 #dandy-dan {
 	position: absolute;
 	left:0;
 	right:0;
-	padding-top: 15px;
-	bottom: -10px;
+	bottom: -300%;
 	width: 100vw;
 	height: 75vh;
 	display: flex;
@@ -174,12 +197,11 @@ body.active #bottom-panel {
 	justify-content: center;
 	overflow: hidden;
 	z-index: 3;
-	transition: transform 1s ease-in-out;
-	transform: translateY(200%);
+	transition: bottom 1s ease-in-out;
 }
 
 body.active #dandy-dan {
-	transform: translateY(0);
+	bottom: -15px;
 }
 
 #dandy-dan > img {
@@ -212,7 +234,6 @@ main.error > p {
 }
 
 .shimmer {
-	text-align: center;
 	background: -webkit-gradient(linear, left top, right top, from(#222), to(#222), color-stop(0.5, silver));
 	background: -moz-gradient(linear, left top, right top, from(#222), to(#222), color-stop(0.5, silver));
 	background: gradient(linear, left top, right top, from(#222), to(#222), color-stop(0.5, silver));
@@ -264,6 +285,12 @@ main.error > p {
 	animation-duration: 7s;
 }
 
+.hide,
+.hide::before,
+.hide::after {
+	display: none !important;
+}
+
 @keyframes firework {
 	0% {
 		transform: translate(var(--x), var(--initialY));
@@ -280,12 +307,6 @@ main.error > p {
 	}
 }
 
-body.active .firework,
-body.active .firework::before,
-body.active .firework::after {
-	animation-play-state: running;
-	display: initial;
-}
 
 .firework,
 .firework::before,
@@ -299,8 +320,6 @@ body.active .firework::after {
 	overflow: hidden;
 	content: "";
 	animation: firework 2s infinite;
-	animation-play-state: paused;
-	display: none;
 	position: absolute;
 	top: 50%;
 	left: 50%;
@@ -353,11 +372,6 @@ body.active .firework::after {
 	background-repeat: no-repeat;
 }
 
-.firework.hide,
-.firework.hide::before,
-.firework.hide::after {
-	display: none !important;
-}
 
 .firework::before {
 	--x: -50%;
@@ -374,8 +388,8 @@ body.active .firework::after {
 }
 
 .firework.f1 {
-	--y: -40vh;
-	--x: -50%;
+	--y: -40vmin;
+	--x: 20vmin;
 }
 
 .firework.f1,
@@ -394,8 +408,8 @@ body.active .firework::after {
 }
 
 .firework.f2 {
-	--x: 30vh;
-	--y: -40vh;
+	--x: 30vmin;
+	--y: -40vmin;
 }
 
 .firework.f2,
@@ -414,8 +428,8 @@ body.active .firework::after {
 }
 
 .firework.f3 {
-	--x: -30vh;
-	--y: -50vh;
+	--x: -30vmin;
+	--y: -50vmin;
 }
 
 .firework.f3,
@@ -434,8 +448,8 @@ body.active .firework::after {
 }
 
 .firework.f4 {
-	--x: 30vh;
-	--y: -80vh;
+	--x: 30vmin;
+	--y: -80vmin;
 }
 
 .firework.f4,
@@ -454,8 +468,8 @@ body.active .firework::after {
 }
 
 .firework.f5 {
-	--x: 10vh;
-	--y: 10vh;
+	--x: -10vmin;
+	--y: 10vmin;
 }
 
 .firework.f5,
@@ -474,8 +488,8 @@ body.active .firework::after {
 }
 
 .firework.f6 {
-	--x: -40vh;
-	--y: -45vh;
+	--x: -40vmin;
+	--y: -45vmin;
 }
 
 .firework.f6,
@@ -494,8 +508,8 @@ body.active .firework::after {
 }
 
 .firework.f7 {
-	--x: -30vh;
-	--y: -15vh;
+	--x: -30vmin;
+	--y: -15vmin;
 }
 
 .firework.f7,
@@ -514,8 +528,8 @@ body.active .firework::after {
 }
 
 .firework.f8 {
-	--x: 0vh;
-	--y: -15vh;
+	--x: 0vmin;
+	--y: -15vmin;
 }
 
 .firework.f8,
@@ -617,13 +631,13 @@ body.active .firework::after {
 	}
 }
 
-@media screen and (max-width: 750px) {
+@media screen and (max-width: 850px) {
 	#greeting {
 		font-size: 3rem;
 	}
 
 	#dandy-dan {
-		height: 70vh;
+		height: 65vh;
 	}
 
 	#start-button {
@@ -631,8 +645,8 @@ body.active .firework::after {
 	}
 
 	.firework.f1 {
-		--y: -40vh;
-		--x: 20vw;
+		--y: -40vmin;
+		--x: 20vmin;
 	}
 
 	.firework.f1,
@@ -644,8 +658,8 @@ body.active .firework::after {
 	}
 
 	.firework.f2 {
-		--y: -40vh;
-		--x: 30vw;
+		--y: -40vmin;
+		--x: 30vmin;
 	}
 
 	.firework.f2,
@@ -657,8 +671,8 @@ body.active .firework::after {
 	}
 
 	.firework.f3 {
-		--y: -30vh;
-		--x: -30vw;
+		--y: -30vmin;
+		--x: -30vmin;
 	}
 
 	.firework.f3,
@@ -671,8 +685,8 @@ body.active .firework::after {
 
 
 	.firework.f4 {
-		--x: -30vh;
-		--y: -90vh;
+		--x: -30vmin;
+		--y: -90vmin;
 	}
 
 	.firework.f4,
@@ -684,8 +698,8 @@ body.active .firework::after {
 	}
 
 	.firework.f5 {
-		--x: 10vh;
-		--y: 10vh;
+		--x: 10vmin;
+		--y: 10vmin;
 	}
 
 	.firework.f5,
@@ -698,8 +712,8 @@ body.active .firework::after {
 	}
 
 	.firework.f6 {
-		--x: -40vh;
-		--y: -45vh;
+		--x: -40vmin;
+		--y: -45vmin;
 	}
 
 	.firework.f6,
@@ -712,8 +726,8 @@ body.active .firework::after {
 	}
 
 	.firework.f7 {
-		--x: 0vh;
-		--y: -95vh;
+		--x: 0vmin;
+		--y: -95vmin;
 	}
 
 	.firework.f7,
@@ -721,12 +735,12 @@ body.active .firework::after {
 	.firework.f7::after {
 		--finalSize: 85vmin;
 		left: 50%;
-		top: 100vh;
+		top: 100vmin;
 	}
 
 	.firework.f8 {
-		--x: 0vh;
-		--y: 0vh;
+		--x: 0vmin;
+		--y: 0vmin;
 	}
 
 	.firework.f8,
@@ -737,6 +751,5 @@ body.active .firework::after {
 		top: 50%;
 		animation-delay: 0s;
 	}
-
 }
 

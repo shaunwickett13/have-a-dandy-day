@@ -2,17 +2,16 @@
 <html lang="en">
 <head>
 	<meta http-equiv="content-type" content="text/html;" charset="UTF-8" />
-    <meta name="description" content="Where-ever you are... who-ever you are... have a dandy day!" />
+    <meta name="description" content="Wherever you are... whoever you are... have a dandy day!" />
     <meta name="keywords" content="dandy, day, positivity, greetings, well wishes" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <meta name="theme-color" content="#000000" />
+    <meta name="theme-color" content="black" />
 
     <meta property="og:title" content="Have A Dandy Day!" />
     <meta property="og:url" content="https://haveadandyday.com" />
+    <meta property="og:description" content="Wherever you are... whoever you are... have a dandy day!">
     <meta property="og:type" content="website" />
-    <meta property="og:audio" content="https://haveadandyday.com/audio/jingle.mp3" />
-    <meta property="og:audio:type" content="audio/mpeg" />
     <meta property="og:image" content="https://haveadandyday.com/image/share.png" />
     <meta property="og:image:alt" content="A man's head peeks out the bottom of the frame and there is text above him saying 'Have A Dandy Day!'" />
     <meta property="og:image:type" content="image/png" />
@@ -27,74 +26,139 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Comfortaa">
     <link rel="stylesheet" type="text/css" href="style.css" media="screen" />
 
-    <script type="text/javascript" src="https://livejs.com/live.js"></script>
-
     <script>
-        const DandyDayController = (function() {
-            const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
-            let counter = 0;
-            const quotes = [
-                "The day is looking to be quite dandy indeed!",
-                `When it comes to the dandiest day of the week, you can't beat ${weekday[new Date().getDay()]}s.`,
-            ].map(value => ({ value, sort: Math.random() }))
-                .sort((a, b) => a.sort - b.sort)
-                .map(({ value }) => value)
-            return {
-                start: function () {
-                    document.querySelector("body").classList.add("active")
-                    const jingle = document.querySelector("#jingle")
-                    counter++
-                    jingle.play();
-                },
-                stop: function () {
-                    return;
-                    let buttonText;
-                    if (counter === 1) {
-                        buttonText = "click again for more well wishes"
-                    } else if (counter === 2) {
-                        buttonText = "click again for even more well wishes"
-                    } else {
-                        buttonText = "continue clicking for as many well wishes as you want"
+        function debounce(func, timeout = 50){
+            let timer;
+            return (...args) => {
+                clearTimeout(timer);
+                timer = setTimeout(() => { func.apply(this, args); }, timeout);
+            };
+        }
+
+        function setVhProperty () {
+            document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
+        }
+
+        function initialize() {
+            addEventListener("load", () => {
+                if (window.location.href.includes("localhost")) {
+                    const livejs = document.createElement("script");
+                    livejs.setAttribute("src", "https://livejs.com/live.js")
+                    livejs.setAttribute("type", "text/javascript")
+                    document.head.appendChild(livejs)
+                }
+            })
+
+            addEventListener("resize", debounce(() => setVhProperty()))
+
+            setVhProperty()
+        }
+
+        class DandyDayController {
+            constructor() {
+                this.playCounter = 0
+                this.intervalTimer = null
+                this.focusSchedule = [
+                    [3.5, "have"],
+                    [4.0, "a"],
+                    [4.5, "dan"],
+                    [4.75, "dy"],
+                    [5.0, "day"],
+                    [10.0, "have"],
+                    [10.5, "a"],
+                    [11, "dan"],
+                    [11.25, "dy"],
+                    [11.5, "day"],
+                    [23.0, "have"],
+                    [23.5, "a"],
+                    [24, "dan"],
+                    [24.25, "dy"],
+                    [24.5, "day"],
+                    [24.75, "have"],
+                    [25.25, "a"],
+                    [25.75, "dan"],
+                    [26, "dy"],
+                    [26.25, "day"],
+                ]
+            }
+
+            getAudio() {
+                return document.querySelector("#jingle")
+            }
+
+            handleAudioTimeUpdate() {
+                const audioSampleTolerance = 500
+                const {currentTime} = this.getAudio()
+
+                for (const [time, selector] of this.focusSchedule) {
+                    const timeUntilFocus = (time - currentTime) * 1000
+                    if (timeUntilFocus <= audioSampleTolerance) {
+                        setTimeout(() => document.querySelector(`#${selector}.word`).classList.add("focus"), timeUntilFocus)
+                        setTimeout(() => document.querySelector(`#${selector}.word`).classList.remove("focus"), timeUntilFocus + 1000)
                     }
-                    document.querySelector("#start-button").innerText = buttonText
-                    document.querySelector("body").classList.remove("active")
+                }
+
+                if (currentTime >= 26 && document.querySelectorAll(".firework").length === 0) {
+                    const numFireworks = 8;
+                    Array.from(Array(numFireworks).keys()).map(i => {
+                        const firework = document.createElement("div")
+                        firework.classList.add("firework")
+                        firework.classList.add(`f${i + 1}`)
+                        document.querySelector("body").appendChild(firework)
+                    })
                 }
             }
-        })();
+
+            startExperience() {
+                document.querySelector("body").classList.add("active")
+                const audio = this.getAudio()
+                this.playCounter++
+                audio.play();
+                setTimeout(() => document.querySelector("#splash").classList.add("hide"), 1000)
+            }
+
+            stopExperience() {
+                document.querySelector("#splash").classList.remove("hide")
+                document.querySelector("body").classList.remove("active")
+                document.querySelectorAll('.firework').forEach(e => e.remove());
+                clearInterval(this.intervalTimer)
+            }
+        }
+
+        const dandyDayController = new DandyDayController();
+
+        initialize()
     </script>
 
     <title>Have A Dandy Day!</title>
 </head>
 <body>
-    <div id="top-panel" class="background-container">
-        <h1 id="greeting" class="shimmer">Have A Dandy Day!</h1>
-    </div>
     <div id="splash" class="background-container">
-        <button id="start-button" onclick="DandyDayController.start()">click to receive well wishes</button>
+        <button id="start-button" onclick="dandyDayController.startExperience()">click to be wished a dandy day</button>
+    </div>
+    <div id="top-panel" class="background-container">
+        <h1 id="greeting" class="shimmer">
+            <span class="word" id="have">Have</span>
+            <span class="word" id="a">A</span>
+            <span class="word" id="dan">Dan</span><span class="word" id="dy">dy</span>
+            <span class="word" id="day">Day!</span>
+        </h1>
     </div>
     <div id="dandy-dan">
         <img class="dance" src="image/smile.png" alt="A smiling man wearing a bowling hat, a rainbow plaid blazer, and a fake moustache gives two thumbs up.">
     </div>
     <div id="bottom-panel" class="background-container">
-        <p>
+        <h3>
             "<span id="quote">The day is looking to be quite dandy indeed!</span>" - Dandy Dan
-        </p>
+        </h3>
     </div>
-    <div class="firework f1"></div>
-    <div class="firework f2"></div>
-    <div class="firework f3"></div>
-    <div class="firework f4"></div>
-    <div class="firework f5"></div>
-    <div class="firework f6"></div>
-    <div class="firework f7"></div>
-    <div class="firework f8"></div>
     <div class="bg right"></div>
     <div class="bg right bg2"></div>
     <div class="bg right bg3"></div>
     <div class="bg left"></div>
     <div class="bg left bg4"></div>
     <div class="bg left bg5"></div>
-    <audio id="jingle" preload="auto" onended="DandyDayController.stop()">
+    <audio id="jingle" preload="auto" onended="dandyDayController.stopExperience()" ontimeupdate="dandyDayController.handleAudioTimeUpdate()">
         <source src="audio/jingle.mp3" type="audio/mpeg" />
     </audio>
 </body>

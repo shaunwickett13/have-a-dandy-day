@@ -96,7 +96,7 @@ body {
 	position: absolute;
 	-webkit-backdrop-filter: blur(15px);
 	backdrop-filter: blur(15px);
-	transition: backdrop-filter 0.25s ease-in-out, background-color 1s ease-in-out;
+	transition: backdrop-filter 0.5s ease-in-out, background-color 1s ease-in-out;
 }
 
 body.active #splash {
@@ -105,26 +105,71 @@ body.active #splash {
 	background-color: rgba(0, 0, 0, 0);
 }
 
-#start-button {
+button {
 	font: inherit;
 	cursor: pointer;
 	outline: none;
-	font-size: 2.5rem;
-	font-weight: normal;
-	padding: 1.5rem;
 	border: 1px solid gainsboro;
 	color: gainsboro;
 	background-color: rgba(var(--color5-rgb), 0.1);
-	transition: opacity 0.25s ease-in-out, background-color 0.1s ease-in-out;
+	transition: opacity 0.5s ease-in-out, background-color 0.1s ease-in-out;
 	opacity: 1;
 }
 
-#start-button:hover {
+button:hover {
 	background-color: rgba(var(--color5-rgb), 0.25);
+}
+
+#start-button {
+	font-size: 2.5rem;
+	font-weight: normal;
+	padding: 1.5rem;
+	background-color: rgba(var(--color3-rgb), 0.2);
+	min-width: 30vw;
+}
+
+#start-button:hover {
+	background-color: rgba(var(--color3-rgb), 0.4);
 }
 
 body.active #start-button {
 	opacity: 0;
+}
+
+#additional {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	transition: opacity 0.5s ease-in-out;
+}
+
+body.active #additional {
+	opacity: 0;
+}
+
+#additional-buttons {
+	display: flex;
+	margin-top: 2rem;
+}
+
+#additional-buttons > button {
+	padding: 0.75rem;
+}
+
+#additional-info {
+	display: flex;
+	width: 100%;
+	height: 5vh;
+	align-items: center;
+	justify-content: center;
+}
+
+#additional-info > label {
+	color: gainsboro;
+	margin: auto;
+	padding: 1rem;
+	text-align: center;
 }
 
 #top-panel {
@@ -160,11 +205,29 @@ body.active #bottom-panel {
 	opacity: 1;
 }
 
+#progress-bar {
+	width: 100%;
+	height: 0.25rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: rgba(0, 0, 0, 0.05);
+}
+
+#progress-value {
+	height: 100%;
+	width: 100%;
+	transition: width .5s ease-in-out;
+	animation: rainbow-reverse 10s infinite alternate;
+	opacity: 0.5;
+}
+
 #greeting {
 	font-size: 6rem;
 	font-weight: bold;
 	width: 100%;
-	padding: .75rem;
+	padding: 1rem;
+	background-color: rgba(0, 0, 0, 0.05);
 }
 
 .word {
@@ -173,16 +236,15 @@ body.active #bottom-panel {
 }
 
 .word.focus {
-	--glow-size: 0.2rem;
+	--glow-size: 0.15rem;
 	font-size: 100%;
 	text-shadow:
 			0 0 calc(var(--glow-size)) #fff,
 			0 0 calc(var(--glow-size) * 2) #fff,
-			0 0 calc(var(--glow-size) * 3) var(--color1-hex),
-			0 0 calc(var(--glow-size) * 4) var(--color5-hex),
-			0 0 calc(var(--glow-size) * 5) var(--color2-hex),
-			0 0 calc(var(--glow-size) * 6) var(--color6-hex),
-			0 0 calc(var(--glow-size) * 7) var(--color3-hex);
+			0 0 calc(var(--glow-size) * 3) var(--color6-hex),
+			0 0 calc(var(--glow-size) * 4) var(--color6-hex),
+			0 0 calc(var(--glow-size) * 5) var(--color6-hex),
+			0 0 calc(var(--glow-size) * 6) var(--color6-hex);
 }
 
 #dandy-dan {
@@ -574,6 +636,53 @@ main.error > p {
 	}
 }
 
+@keyframes rainbow-reverse {
+	0% {
+		color: rgba(221, 58, 21, 0.8);
+		background-color: rgba(148, 205, 51, 0.8);
+	}
+	10% {
+		color: rgba(220, 36, 61, 0.8);
+		background-color: rgba(159, 207, 46, 0.8);
+	}
+	20% {
+		color: rgba(209, 30, 90, 0.8);
+		background-color: rgba(169, 208, 41, 0.8);
+	}
+	30% {
+		color: rgba(189, 41, 114, 0.8);
+		background-color: rgba(180, 209, 36, 0.8);
+	}
+	40% {
+		color: rgba(163, 56, 131, 0.8);
+		background-color: rgba(191, 210, 32, 0.8);
+	}
+	50% {
+		color: rgba(132, 68, 141, 0.8);
+		background-color: rgba(201, 211, 27, 0.8);
+	}
+	60% {
+		color: rgb(101, 75, 142, 0.8);
+		background-color: rgba(212, 212, 23, 0.8);
+	}
+	70% {
+		color: rgb(72, 79, 135, 0.8);
+		background-color: rgba(223, 213, 21, 0.8);
+	}
+	80% {
+		color: rgba(49, 79, 122, 0.8);
+		background-color: rgba(234, 213, 19, 0.8);
+	}
+	90% {
+		color: rgba(39, 76, 106, 0.8);
+		background-color: rgba(244, 214, 19, 0.8);
+	}
+	100% {
+		color: rgba(42, 72, 88, 0.8);
+		background-color: rgba(255, 214, 21, 0.8);
+	}
+}
+
 @keyframes rainbow {
 	0% {
 		background-color: rgba(221, 58, 21, 0.8);
@@ -624,16 +733,18 @@ main.error > p {
 @media screen and (max-width: 1000px) {
 	#greeting {
 		font-size: 5rem;
+		padding: 0.5rem;
 	}
 
 	#start-button {
-		font-size: 2.25rem;
+		min-width: 40vw;
 	}
 }
 
 @media screen and (max-width: 850px) {
 	#greeting {
-		font-size: 3rem;
+		font-size: 4rem;
+		padding: 0;
 	}
 
 	#dandy-dan {
@@ -641,7 +752,7 @@ main.error > p {
 	}
 
 	#start-button {
-		font-size: 1.75rem;
+		min-width: 55vw;
 	}
 
 	.firework.f1 {

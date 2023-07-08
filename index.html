@@ -47,50 +47,56 @@
                     livejs.setAttribute("type", "text/javascript")
                     document.head.appendChild(livejs)
                 }
+
+                if (!navigator.canShare || !navigator.canShare(DandyDayController.sharePayload)) {
+                    document.getElementById("share-button").classList.add("hide")
+                }
             })
 
-            addEventListener("resize", debounce(() => setVhProperty()))
-
             setVhProperty()
+            addEventListener("resize", debounce(() => setVhProperty()))
         }
 
         class DandyDayController {
-            constructor() {
-                this.playCounter = 0
-                this.intervalTimer = null
-                this.focusSchedule = [
-                    [3.5, "have"],
-                    [4.0, "a"],
-                    [4.5, "dan"],
-                    [4.75, "dy"],
-                    [5.0, "day"],
-                    [10.0, "have"],
-                    [10.5, "a"],
-                    [11, "dan"],
-                    [11.25, "dy"],
-                    [11.5, "day"],
-                    [23.0, "have"],
-                    [23.5, "a"],
-                    [24, "dan"],
-                    [24.25, "dy"],
-                    [24.5, "day"],
-                    [24.75, "have"],
-                    [25.25, "a"],
-                    [25.75, "dan"],
-                    [26, "dy"],
-                    [26.25, "day"],
-                ]
+            static focusSchedule = [
+                [3.5, "have"],
+                [4.0, "a"],
+                [4.5, "dan"],
+                [4.75, "dy"],
+                [5.0, "day"],
+                [10.0, "have"],
+                [10.5, "a"],
+                [11, "dan"],
+                [11.25, "dy"],
+                [11.5, "day"],
+                [23.0, "have"],
+                [23.5, "a"],
+                [24, "dan"],
+                [24.25, "dy"],
+                [24.5, "day"],
+                [24.75, "have"],
+                [25.25, "a"],
+                [25.75, "dan"],
+                [26, "dy"],
+                [26.25, "day"],
+            ]
+
+            static sharePayload = {
+                title: "Have A Dandy Day!",
+                text: "Whoever you are... Wherever you are... have a dandy day!",
+                url: "https://haveadandyday.com"
             }
+            constructor() {}
 
             getAudio() {
-                return document.querySelector("#jingle")
+                return document.getElementById("jingle")
             }
 
             handleAudioTimeUpdate() {
                 const audioSampleTolerance = 500
-                const {currentTime} = this.getAudio()
+                const {currentTime, duration} = this.getAudio()
 
-                for (const [time, selector] of this.focusSchedule) {
+                for (const [time, selector] of DandyDayController.focusSchedule) {
                     const timeUntilFocus = (time - currentTime) * 1000
                     if (timeUntilFocus <= audioSampleTolerance) {
                         setTimeout(() => document.querySelector(`#${selector}.word`).classList.add("focus"), timeUntilFocus)
@@ -98,30 +104,63 @@
                     }
                 }
 
-                if (currentTime >= 26 && document.querySelectorAll(".firework").length === 0) {
+                document.getElementById("progress-value").style.width = `${100 - ((currentTime / duration) * 100)}%`
+
+                if (currentTime >= 25 && document.querySelectorAll(".firework").length === 0) {
                     const numFireworks = 8;
+                    const body = document.querySelector("body")
                     Array.from(Array(numFireworks).keys()).map(i => {
                         const firework = document.createElement("div")
                         firework.classList.add("firework")
                         firework.classList.add(`f${i + 1}`)
-                        document.querySelector("body").appendChild(firework)
-                    })
+                        return firework
+                    }).forEach(firework => body.appendChild(firework))
                 }
             }
 
             startExperience() {
                 document.querySelector("body").classList.add("active")
-                const audio = this.getAudio()
-                this.playCounter++
-                audio.play();
                 setTimeout(() => document.querySelector("#splash").classList.add("hide"), 1000)
+
+                this.getAudio().play();
             }
 
             stopExperience() {
-                document.querySelector("#splash").classList.remove("hide")
-                document.querySelector("body").classList.remove("active")
+                document.getElementById("splash").classList.remove("hide")
+                document.body.classList.remove("active")
                 document.querySelectorAll('.firework').forEach(e => e.remove());
-                clearInterval(this.intervalTimer)
+
+                this.getAudio().currentTime = 0
+            }
+
+            showLabel(element) {
+                const label = document.querySelector(`label[for=${element.id}]`)
+                label.classList.remove("hide")
+            }
+
+            hideLabel(element) {
+                const label = document.querySelector(`label[for=${element.id}]`)
+                label.classList.add("hide")
+            }
+
+            showSplash() {
+
+            }
+
+            showShare() {
+                navigator.share(DandyDayController.sharePayload)
+            }
+
+            showQuote() {
+
+            }
+
+            showFaq() {
+
+            }
+
+            showAbout() {
+
             }
         }
 
@@ -134,7 +173,21 @@
 </head>
 <body>
     <div id="splash" class="background-container">
-        <button id="start-button" onclick="dandyDayController.startExperience()">click to be wished a dandy day</button>
+        <button id="start-button" onclick="dandyDayController.startExperience()">start experience</button>
+        <div id="additional">
+            <div id="additional-buttons">
+                <button id="share-button" onmouseenter="dandyDayController.showLabel(this)" onmouseleave="dandyDayController.hideLabel(this)" onclick="dandyDayController.showShare()" >share</button>
+                <button id="quotes-button" onmouseenter="dandyDayController.showLabel(this)" onmouseleave="dandyDayController.hideLabel(this)" onclick="dandyDayController.showQuote()">quote</button>
+                <button id="faq-button" onmouseenter="dandyDayController.showLabel(this)" onmouseleave="dandyDayController.hideLabel(this)" onclick="dandyDayController.showFaq()">faq</button>
+                <button id="about-button" onmouseenter="dandyDayController.showLabel(this)" onmouseleave="dandyDayController.hideLabel(this)" onclick="dandyDayController.showAbout()">about</button>
+            </div>
+            <div id="additional-info">
+                <label for="share-button" class="hide">share this site to brighten someone else's day</label>
+                <label for="quotes-button" class="hide">get a fun quote from Dandy Dan himself</label>
+                <label for="faq-button" class="hide">view the frequently asked questions</label>
+                <label for="about-button" class="hide">view information about this site</label>
+            </div>
+        </div>
     </div>
     <div id="top-panel" class="background-container">
         <h1 id="greeting" class="shimmer">
@@ -148,9 +201,10 @@
         <img class="dance" src="image/smile.png" alt="A smiling man wearing a bowling hat, a rainbow plaid blazer, and a fake moustache gives two thumbs up.">
     </div>
     <div id="bottom-panel" class="background-container">
-        <h3>
-            "<span id="quote">The day is looking to be quite dandy indeed!</span>" - Dandy Dan
-        </h3>
+        <div id="progress-bar">
+            <div id="progress-value">
+            </div>
+        </div>
     </div>
     <div class="bg right"></div>
     <div class="bg right bg2"></div>

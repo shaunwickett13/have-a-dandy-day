@@ -4,7 +4,7 @@
 	<meta http-equiv="content-type" content="text/html;" charset="UTF-8" />
     <meta name="description" content="Wherever you are... whoever you are... have a dandy day!" />
     <meta name="keywords" content="dandy, day, positivity, greetings, well wishes" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no" />
 
     <meta name="theme-color" content="black" />
 
@@ -17,6 +17,9 @@
     <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1024" />
     <meta property="og:image:height" content="1024" />
+
+    <link rel="stylesheet" href="https://github.hubspot.com/odometer/themes/odometer-theme-default.css" />
+    <script src="https://github.hubspot.com/odometer/odometer.js"></script>
 
     <link rel="apple-touch-icon" sizes="180x180" href="image/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="image/favicon-32x32.png">
@@ -53,11 +56,36 @@
 
             static sharePayload = {
                 title: "Have A Dandy Day!",
-                text: "Whoever you are... Wherever you are... have a dandy day!",
                 url: "https://haveadandyday.com"
             }
+
+            static quotes = [
+                "Today is looking to be quite a dandy day indeed!",
+                "Keep your chin up, your spirit bright, and your outfit dazzling. That's the recipe for a dandy day!",
+                "I once tried a somber day. Got bored within an hour and went back to dandy!",
+                "In Dandyland, we don't have bad days, just different shades of dandy!",
+                "Remember, wherever you are, you're always just a hop, skip, and a jolly jump away from a dandy day!",
+                "If your day feels as flat as a pancake, just add some syrup of silliness and a dollop of dandy!",
+                "Every morning is a new chance to make the world a more delightful and dandy place! Let's get to work!",
+                "I'm on a diet, I've decided to cut down on negativity and fill up on dandy!",
+                "Ever find yourself up the creek without a paddle? Build a sail from your dreams and let the winds of whimsy guide you!",
+                "Is this madness, or just the pinnacle of dandy? The jury is still out folks!",
+                "They said, 'Dress for the job you want.' So I put on my top hat and rainbow blazer and here I am!",
+                "If life gives you lemons, squeeze them into the eyes of your naysayers. Just kidding!",
+                "I find sanity dreadfully dull. Now, a touch of madness, that's the secret ingredient of a dandy life!",
+                "This morning I bashed my toe on the wall four times in a row. I was swearing like a sailor! Not dandy at all!",
+                "A dash of chaos, a splash of panache, shaken, not stirred – now THAT'S a Dandy Dan cocktail!",
+                "I had a real job once - lasted two hours. Why? They wouldn't let me replace the elevator music with my jingle. No dandy vibes, no Dandy Dan!",
+                "Sometimes the wheels don't just come off the bus and you take a joyride down Insanity Lane. Trust me, I would know!",
+                //"A racoon that lived under my house witnessed me practicing my dandy dance. It howled like a banshee and scurried off never to be seen again!",
+            ]
+
+            static apiDomainName = "https://api.haveadandyday.com"
+
             constructor() {
-                addEventListener("load", this._initialize)
+                this.buttonCountUpdater = null
+                this.quoteIndex = 0
+                addEventListener("load", this.onLoad)
             }
 
             getAudio() {
@@ -95,6 +123,7 @@
                 setTimeout(() => document.querySelector("#splash").classList.add("hide"), 1000)
 
                 this.getAudio().play();
+                this.incrementButtonClickCount()
             }
 
             stopExperience() {
@@ -104,7 +133,7 @@
 
                 const audio = this.getAudio()
 
-                audio.stop()
+                audio.pause()
                 audio.currentTime = 0
             }
 
@@ -118,35 +147,111 @@
                 label.classList.add("hide")
             }
 
-            showSplash() {
+            hideSlideDownPanel() {
                 document.getElementById("splash").classList.remove("show-misc")
+                clearInterval(this.buttonCountUpdater)
             }
 
             showShare() {
-                navigator.share(DandyDayController.sharePayload)
+                const text = `"${DandyDayController.quotes[this.quoteIndex === 0 ? DandyDayController.quotes.length - 1 : this.quoteIndex - 1]}" - Dandy Dan`
+                navigator.share({...DandyDayController.sharePayload, text })
+            }
+
+            showStats() {
+                this.showSlideUpPanel()
+                document.getElementById("stats-section").classList.remove("hide")
+                this.updateButtonClickCount()
+                this.buttonCountUpdater = setInterval(this.updateButtonClickCount, 60000)
             }
 
             showQuote() {
-                this._showMisc()
+                this.showSlideUpPanel()
                 document.getElementById("quote-section").classList.remove("hide")
             }
 
+            showNewQuote() {
+                document.querySelector("#quote-section > div.instructions").classList.add("hide")
+                document.querySelector("#quote-section > blockquote").classList.remove("hide")
+
+                const awooga = document.getElementById("awooga")
+
+                awooga.pause()
+                awooga.currentTime = 0
+                awooga.play()
+
+                const { quotes } = DandyDayController
+                document.querySelector("#quote-section > blockquote").innerText = quotes[this.quoteIndex++]
+                if (this.quoteIndex === DandyDayController.quotes.length) {
+                    this.quoteIndex = 0
+                }
+            }
+
             showFaq() {
-                this._showMisc()
+                this.showSlideUpPanel()
                 document.getElementById("faq-section").classList.remove("hide")
             }
 
             showAbout() {
-                this._showMisc()
+                this.showSlideUpPanel()
                 document.getElementById("about-section").classList.remove("hide")
             }
 
-            _showMisc() {
+            onButtonClick(event) {
+                const {type, target} = event
+
+                if (type === "touchstart") {
+                    event.preventDefault()
+                }
+
+                if ("share-button" === target.id) {
+                    this.showShare()
+                } else if ("stats-button" === target.id) {
+                    this.showStats()
+                } else if ("quotes-button" === target.id) {
+                    this.showQuote()
+                } else if ("faq-button" === target.id) {
+                    this.showFaq()
+                } else if ("about-button" === target.id) {
+                    this.showAbout()
+                } else if ("go-back-button" === target.id) {
+                    this.hideSlideDownPanel()
+                } else if ("new-quote-button" === target.id) {
+                    this.showNewQuote()
+                }
+            }
+
+            incrementButtonClickCount() {
+                if (window.location.href.includes("localhost")) {
+                    return
+                }
+                try {
+                    fetch(`${DandyDayController.apiDomainName}/statistics/button`, { method: 'POST' })
+                } catch (e) {
+                    console.error(`Failed to increment button counter: ${e}`)
+                }
+            }
+
+            updateButtonClickCount() {
+                try {
+                    fetch(`${DandyDayController.apiDomainName}/statistics/button`)
+                        .then(response => response.json())
+                        .then(response => {
+                            document.getElementById("odometer").innerText = JSON.parse(response.output)
+                                .data
+                                .map(d => d.count)
+                                .reduce((partial, a) => partial + a, 0)
+                        })
+                } catch (e) {
+                    console.error(`Failed to get button count: ${e}`)
+                }
+            }
+
+            showSlideUpPanel() {
                 Array.from(document.querySelectorAll("#misc-panel section")).forEach(element => element.classList.add("hide"))
                 document.getElementById("splash").classList.add("show-misc")
             }
 
-            _initialize() {
+            onLoad() {
                 if (window.location.href.includes("localhost")) {
                     const livejs = document.createElement("script");
                     livejs.setAttribute("src", "https://livejs.com/live.js")
@@ -169,16 +274,18 @@
 <body>
     <main id="splash" class="background-container">
         <nav id="control-panel" class="hide">
-            <button id="start-button" onclick="dandyDayController.startExperience()">click for well wishes</button>
+            <button id="start-button" onclick="dandyDayController.startExperience()">click for dandy day</button>
             <div id="additional">
                 <div id="additional-buttons">
-                    <button id="share-button" onmouseenter="dandyDayController.showLabel(this)" onmouseleave="dandyDayController.hideLabel(this)" onclick="dandyDayController.showShare()">share</button>
-                    <button id="quotes-button" onmouseenter="dandyDayController.showLabel(this)" onmouseleave="dandyDayController.hideLabel(this)" onclick="dandyDayController.showQuote()">quote</button>
-                    <button id="faq-button" onmouseenter="dandyDayController.showLabel(this)" onmouseleave="dandyDayController.hideLabel(this)" onclick="dandyDayController.showFaq()">faq</button>
-                    <button id="about-button" onmouseenter="dandyDayController.showLabel(this)" onmouseleave="dandyDayController.hideLabel(this)" onclick="dandyDayController.showAbout()">about</button>
+                    <button id="share-button" onmouseenter="dandyDayController.showLabel(this)" onmouseleave="dandyDayController.hideLabel(this)" onclick="dandyDayController.onButtonClick(event)" ontouchstart="dandyDayController.onButtonClick(event)">share</button>
+                    <button id="stats-button" onmouseenter="dandyDayController.showLabel(this)" onmouseleave="dandyDayController.hideLabel(this)" onclick="dandyDayController.onButtonClick(event)" ontouchstart="dandyDayController.onButtonClick(event)">stats</button>
+                    <button id="quotes-button" onmouseenter="dandyDayController.showLabel(this)" onmouseleave="dandyDayController.hideLabel(this)" onclick="dandyDayController.onButtonClick(event)" ontouchstart="dandyDayController.onButtonClick(event)">quote</button>
+                    <button id="faq-button" onmouseenter="dandyDayController.showLabel(this)" onmouseleave="dandyDayController.hideLabel(this)" onclick="dandyDayController.onButtonClick(event)" ontouchstart="dandyDayController.onButtonClick(event)">faq</button>
+                    <button id="about-button" onmouseenter="dandyDayController.showLabel(this)" onmouseleave="dandyDayController.hideLabel(this)" onclick="dandyDayController.onButtonClick(event)" ontouchstart="dandyDayController.onButtonClick(event)">about</button>
                 </div>
                 <div id="additional-info">
                     <label for="share-button" class="hide">share this site to brighten someone else's day</label>
+                    <label for="stats-button" class="hide">view the total number of dandy days wished</label>
                     <label for="quotes-button" class="hide">get a fun quote from Dandy Dan himself</label>
                     <label for="faq-button" class="hide">view the frequently asked questions</label>
                     <label for="about-button" class="hide">view information about this site</label>
@@ -186,22 +293,31 @@
             </div>
         </nav>
         <div id="misc-panel">
-            <button id="go-back-button" onclick="dandyDayController.showSplash()">
-                <svg fill="currentColor" height="800px" width="800px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+            <button id="go-back-button" onclick="dandyDayController.onButtonClick(event)" ontouchstart="dandyDayController.onButtonClick(event)">
+                <svg style="pointer-events: none;" fill="currentColor" height="800px" width="800px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                      viewBox="0 0 330 330" xml:space="preserve">
                     <path fill="currentColor" id="XMLID_224_" d="M325.606,229.393l-150.004-150C172.79,76.58,168.974,75,164.996,75c-3.979,0-7.794,1.581-10.607,4.394
                     l-149.996,150c-5.858,5.858-5.858,15.355,0,21.213c5.857,5.857,15.355,5.858,21.213,0l139.39-139.393l139.397,139.393
                     C307.322,253.536,311.161,255,315,255c3.839,0,7.678-1.464,10.607-4.394C331.464,244.748,331.464,235.251,325.606,229.393z"/>
                 </svg>
             </button>
+            <section id="stats-section" class="hide">
+                <div id="odometer" class="odometer">0</div>
+                <p>number of dandy days wished</p>
+            </section>
             <section id="quote-section" class="hide">
-                <blockquote>
-                    The day is looking to be quite dandy indeed!
-                </blockquote>
-                <div></div>
-                <div id="quote-dandy-dan" >
-                    <img src="image/smile.png" alt="A smiling man wearing a bowling hat, a rainbow plaid blazer, and a fake moustache gives two thumbs up.">
+                <div class="instructions">
+                    Please boop Dandy Dan on his nose.
                 </div>
+                <blockquote class="hide"></blockquote>
+                <div class="spacer"></div>
+                <div id="quote-dandy-dan">
+                    <img src="image/smile.png" alt="A smiling man wearing a bowling hat, a rainbow plaid blazer, and a fake moustache gives two thumbs up.">
+                    <button id="new-quote-button" onclick="dandyDayController.onButtonClick(event)" ontouchstart="dandyDayController.onButtonClick(event)"></button>
+                </div>
+                <audio id="awooga" preload="auto">
+                    <source src="audio/awooga.mp3" type="audio/mpeg" />
+                </audio>
             </section>
             <section id="faq-section" class="hide">
                 <h3>frequently asked questions</h3>
@@ -231,14 +347,14 @@
                     Think long and hard before you experience Dandy Dan and his dandy song. That much dandiness may be dangerous.
                 </p>
 
-                <h6>What am I supposed to do after I watch this?</h6>
+                <h6>What am I supposed to do after I experience Dandy Dan and his dandy song?</h6>
                 <p>
                     The possibilities are truly endless.
                 </p>
                 <ul>
                     <li>Continue going about your day.</li>
-                    <li>Watch it again.</li>
-                    <li>Send it to someone else so that they can watch it.</li>
+                    <li>Experience it again.</li>
+                    <li>Send it to someone else so that they can experience it.</li>
                     <li>Look back on your life and ponder the long chain of events that have led you to the point where you are reading this FAQ.</li>
                     <li>All of the above.</li>
                     <li>None of the above.</li>

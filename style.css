@@ -77,7 +77,8 @@ body {
 	width: 100vw;
 	background-color: var(--color2-hex);
 	scrollbar-width: thin;
-	color: var(--colorwhite-hex)
+	color: var(--colorwhite-hex);
+	touch-action: none;
 }
 
 li {
@@ -290,6 +291,24 @@ body.active #control-panel {
 	line-height: 1.5rem;
 }
 
+#stats-section {
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	width: initial;
+}
+
+#odometer {
+	text-shadow: 0 0 5px black;
+	font-size: 6rem;
+	color: var(--colorwhite-hex);
+	width: initial !important;
+}
+
+#odometer + p {
+	font-style: italic;
+}
+
 #about-section {
 	align-items: center;
 	justify-content: center;
@@ -300,19 +319,16 @@ body.active #control-panel {
 	overflow: hidden !important;
 }
 
-#quote-dandy-dan {
+#quote-section > div.instructions {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	position: absolute;
-	left:50%;
-	transform: translate(-50%, 0);
-	top: 40%;
-	width: 800px !important;
-}
-
-#quote-dandy-dan > img {
-	width: 100%;
+	position: relative;
+	font-style: italic;
+	font-size: 1.5rem;
+	flex: 1;
+	color: gainsboro;
+	text-align: center;
 }
 
 #quote-section > blockquote {
@@ -322,17 +338,14 @@ body.active #control-panel {
 	position: relative;
 	background-color: rgba(var(--colorwhite-rgb), 0.5);
 	color: black;
-	padding: 1rem;
+	padding: 2rem;
 	text-align: center;
 	border-radius: 2rem;
-	font-size: 3rem;
 	width: 80%;
+	container-type: inline-size;
+	font-size: 3cqw;
 	flex: 1;
 	z-index: 2;
-}
-
-#quote-section > div {
-	flex: 2;
 }
 
 #quote-section > blockquote::after {
@@ -347,6 +360,37 @@ body.active #control-panel {
 	width: 0;
 }
 
+#quote-section > div.spacer {
+	flex: 2;
+}
+
+#quote-dandy-dan {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: absolute;
+	left:50%;
+	transform: translate(-50%, 0);
+	top: 40%;
+	width: 800px !important;
+	transition: transform .1s ease-in-out;
+}
+
+#quote-dandy-dan > img {
+	width: 100%;
+}
+
+#quote-dandy-dan > button {
+	position: absolute;
+	height: 5rem;
+	width: 5rem;
+	top: 32%;
+	left: 50%;
+	border-radius: 15rem;
+	transform: translate(-50%, -50%);
+	border: none;
+	background-color: transparent;
+}
 
 #top-panel {
 	position: absolute;
@@ -490,8 +534,16 @@ main.error > p {
 	animation-delay: 1s;
 }
 
+body.active .bg.right {
+/*	right: 250%;*/
+}
+
 .bg.left {
 	background-image: linear-gradient(50deg, var(--color1-hex) 60%, var(--color3-hex) 60%);
+}
+
+body.active .bg.left {
+/*	left: 250%;*/
 }
 
 .bg {
@@ -503,6 +555,11 @@ main.error > p {
 	right:-50%;
 	top:0;
 	z-index:1;
+	transition: left 1s ease-in-out, right 1s ease-in-out, opacity .5s ease-in-out;
+}
+
+body.active .bg {
+/*	opacity: 0;*/
 }
 
 .bg2 {
@@ -924,6 +981,11 @@ main.error > p {
 		top: 45%;
 		width: 850px !important;
 	}
+
+	#quote-section > blockquote {
+		padding: 1rem;
+		font-size: 6cqw;
+	}
 }
 
 @media screen and (max-width: 850px) {
@@ -947,6 +1009,10 @@ main.error > p {
 	#quote-dandy-dan {
 		top: 40%;
 		width: 650px !important;
+	}
+
+	#quote-section > blockquote {
+		font-size: 7cqw;
 	}
 
 	.firework.f1 {

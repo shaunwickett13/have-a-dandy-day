@@ -329,6 +329,12 @@ body.active #control-panel {
 	flex: 1;
 	color: gainsboro;
 	text-align: center;
+	opacity: 1;
+	transition: opacity .25s ease-in-out;
+}
+
+#quote-section.show-quote > div.instructions {
+	opacity: 0;
 }
 
 #quote-section > blockquote {
@@ -346,6 +352,12 @@ body.active #control-panel {
 	font-size: 3cqw;
 	flex: 1;
 	z-index: 2;
+	top: -200%;
+	transition: top 0.5s ease-in-out;
+}
+
+#quote-section.show-quote > blockquote {
+	top: 0;
 }
 
 #quote-section > blockquote::after {

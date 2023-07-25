@@ -69,15 +69,15 @@
                 "Every morning is a new chance to make the world a more delightful and dandy place! Let's get to work!",
                 "I'm on a diet, I've decided to cut down on negativity and fill up on dandy!",
                 "Ever find yourself up the creek without a paddle? Build a sail from your dreams and let the winds of whimsy guide you!",
-                "Is this madness, or just the pinnacle of dandy? The jury is still out folks!",
-                "They said, 'Dress for the job you want.' So I put on my top hat and rainbow blazer and here I am!",
+                "Is this madness, or just the pinnacle of dandy? The jury is still out!",
+                "They said, 'Dress for the job you want.' So I put on my top hat and rainbow blazer and started dancing!",
                 "If life gives you lemons, squeeze them into the eyes of your naysayers. Just kidding!",
                 "I find sanity dreadfully dull. Now, a touch of madness, that's the secret ingredient of a dandy life!",
-                "This morning I bashed my toe on the wall four times in a row. I was swearing like a sailor! Not dandy at all!",
+                "This morning I bashed my toe on the wall four times in a row. I was swearing like a sailor! Sorry!",
                 "A dash of chaos, a splash of panache, shaken, not stirred – now THAT'S a Dandy Dan cocktail!",
                 "I had a real job once - lasted two hours. Why? They wouldn't let me replace the elevator music with my jingle. No dandy vibes, no Dandy Dan!",
-                "Sometimes the wheels don't just come off the bus and you take a joyride down Insanity Lane. Trust me, I would know!",
-                //"A racoon that lived under my house witnessed me practicing my dandy dance. It howled like a banshee and scurried off never to be seen again!",
+                //"Sometimes the wheels don't come off the bus and you take a joyride down Dandy Lane instead. Trust me, I would know!",
+                "A racoon that lived under my house witnessed me practicing my dandy dance. It howled like a banshee and scurried off never to be seen again!",
             ]
 
             static apiDomainName = "https://api.haveadandyday.com"
@@ -170,14 +170,10 @@
             }
 
             showNewQuote() {
-                document.querySelector("#quote-section > div.instructions").classList.add("hide")
-                document.querySelector("#quote-section > blockquote").classList.remove("hide")
-
-                const awooga = document.getElementById("awooga")
-
-                awooga.pause()
-                awooga.currentTime = 0
-                awooga.play()
+                document.getElementById("quote-section").classList.add("show-quote")
+                setTimeout(() => {
+                    document.querySelector("#quote-section > .instructions").classList.add("hide")
+                }, 250)
 
                 const { quotes } = DandyDayController
                 document.querySelector("#quote-section > blockquote").innerText = quotes[this.quoteIndex++]
@@ -309,15 +305,12 @@
                 <div class="instructions">
                     Please boop Dandy Dan on his nose.
                 </div>
-                <blockquote class="hide"></blockquote>
+                <blockquote></blockquote>
                 <div class="spacer"></div>
                 <div id="quote-dandy-dan">
                     <img src="image/smile.png" alt="A smiling man wearing a bowling hat, a rainbow plaid blazer, and a fake moustache gives two thumbs up.">
                     <button id="new-quote-button" onclick="dandyDayController.onButtonClick(event)" ontouchstart="dandyDayController.onButtonClick(event)"></button>
                 </div>
-                <audio id="awooga" preload="auto">
-                    <source src="audio/awooga.mp3" type="audio/mpeg" />
-                </audio>
             </section>
             <section id="faq-section" class="hide">
                 <h3>frequently asked questions</h3>
@@ -362,14 +355,14 @@
             </section>
             <section id="about-section" class="hide">
                 <p>
-                    Created, designed, and developed by <a href="https://www.linkedin.com/in/shaun-wickett-759b2b93/" target="_blank" rel="noopener noreferrer">Shaun Wickett</a>.
+                    Created, designed, and developed by someone.
                 </p>
                 <p>
-                    Original lyrics and music by <a href="https://www.fiverr.com/sswinnerton" target="_blank" rel="noopener noreferrer">Sam Swinnerton</a>.
+                    Original lyrics and music by someone else.
                 </p>
                 <br/>
-                <p style="font-style: italic">
-                    This website does not use cookies or collect, store, or share any user data.
+                <p style="font-style: italic; font-size: .85rem;">
+                    This website does not use cookies and does not collect, store, or share user data (other than the total number of times the big dandy button was clicked).
                 </p>
             </section>
         </div>

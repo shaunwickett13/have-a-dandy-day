@@ -15,8 +15,8 @@
     <meta property="og:image" content="https://haveadandyday.com/image/share.png" />
     <meta property="og:image:alt" content="A man's head peeks out the bottom of the frame and there is text above him saying 'Have A Dandy Day!'" />
     <meta property="og:image:type" content="image/png" />
-    <meta property="og:image:width" content="1024" />
-    <meta property="og:image:height" content="1024" />
+    <meta property="og:image:width" content="1250" />
+    <meta property="og:image:height" content="1250" />
 
     <link rel="stylesheet" href="https://github.hubspot.com/odometer/themes/odometer-theme-default.css" />
     <script src="https://github.hubspot.com/odometer/odometer.js"></script>
@@ -60,7 +60,6 @@
             }
 
             static quotes = [
-                "Today is looking to be quite a dandy day indeed!",
                 "Keep your chin up, your spirit bright, and your outfit dazzling. That's the recipe for a dandy day!",
                 "I once tried a somber day. Got bored within an hour and went back to dandy!",
                 "In Dandyland, we don't have bad days, just different shades of dandy!",
@@ -69,16 +68,18 @@
                 "Every morning is a new chance to make the world a more delightful and dandy place! Let's get to work!",
                 "I'm on a diet, I've decided to cut down on negativity and fill up on dandy!",
                 "Ever find yourself up the creek without a paddle? Build a sail from your dreams and let the winds of whimsy guide you!",
-                "Is this madness, or just the pinnacle of dandy? The jury is still out!",
+                "Am I a mad man, or just the pinnacle of dandy? The jury is still out!",
                 "They said, 'Dress for the job you want.' So I put on my top hat and rainbow blazer and started dancing!",
                 "If life gives you lemons, squeeze them into the eyes of your naysayers. Just kidding!",
                 "I find sanity dreadfully dull. Now, a touch of madness, that's the secret ingredient of a dandy life!",
                 "This morning I bashed my toe on the wall four times in a row. I was swearing like a sailor! Sorry!",
-                "A dash of chaos, a splash of panache, shaken, not stirred – now THAT'S a Dandy Dan cocktail!",
-                "I had a real job once - lasted two hours. Why? They wouldn't let me replace the elevator music with my jingle. No dandy vibes, no Dandy Dan!",
-                //"Sometimes the wheels don't come off the bus and you take a joyride down Dandy Lane instead. Trust me, I would know!",
-                "A racoon that lived under my house witnessed me practicing my dandy dance. It howled like a banshee and scurried off never to be seen again!",
-            ]
+                "Sometimes the wheels don't come off the bus and you take a joyride down Dandy Lane instead. Hold on to your britches!",
+                "Stars can't shine without darkness. Likewise, dandy days are made brighter by a dash of the absurd!",
+                "Why blend in when you were born to stand out? Wear your colors with pride and let your inner dandy shine!",
+                "They say time flies when you're having fun. But when you're having a dandy day, it dances!",
+                "Why walk when you can skip, hop, or sashay? Each step's a dance move when you've got dandy in your DNA!",
+                "Some say I'm off the wall. I say, 'Perfect! It's much more fun to bounce around!'",
+            ].map(value => ({value, sort: Math.random()})).sort((a, b) => a.sort - b.sort).map(({value}) => value)
 
             static apiDomainName = "https://api.haveadandyday.com"
 

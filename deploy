@@ -1,0 +1,13 @@
+#!/bin/bash
+
+echo "Deploying artifacts to s3..."
+
+aws s3 cp . s3://have-a-dandy-day --recursive --exclude ".git/*" --exclude ".gitignore" --exclude ".idea/*" --exclude "deploy"
+
+echo "Invalidating Cloudfront cache..."
+
+aws cloudfront create-invalidation --distribution-id E3SA63B3SN4KTU --paths "/*"
+
+echo "Deploy complete!"
+
+exit 0

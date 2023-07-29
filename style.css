@@ -45,6 +45,9 @@ table {
 /*endregion*/
 
 :root {
+	--colortheme-hex: #050F1F;
+	--colortheme-rgb: 5, 15, 31;
+
 	--colorwhite-hex: #dcdcdc;
 	--colorwhite-rgb: 220, 220, 220;
 
@@ -67,7 +70,7 @@ table {
 }
 
 html {
-	background-color: var(--color2-hex);
+	background-color: var(--colortheme-hex);
 }
 
 body {
@@ -75,7 +78,7 @@ body {
 	overflow: hidden;
 	height: 100dvh;
 	width: 100vw;
-	background-color: var(--color2-hex);
+	background-color:var(--color2-hex);
 	scrollbar-width: thin;
 	color: var(--colorwhite-hex);
 	touch-action: none;
@@ -119,17 +122,24 @@ a {
 	-webkit-backdrop-filter: blur(5px);
 	backdrop-filter: blur(5px);
 	padding: 1rem;
-	z-index: 4;
+	z-index: 10;
 }
 
 #splash {
-	background-color: rgba(0, 0, 0, .75);
+	position: absolute;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-items: center;
+	justify-content: center;
 	width: 100vw;
 	height: 100dvh;
-	position: absolute;
+	padding: 1rem;
+	z-index: 10;
+	background-color: rgba(0, 0, 0, .75);
 	-webkit-backdrop-filter: blur(15px);
 	backdrop-filter: blur(15px);
-	transition: backdrop-filter 0.5s ease-in-out, background-color 1s ease-in-out;
+	transition: backdrop-filter 0.5s ease-in-out, background-color 0.5s ease-in-out;
 }
 
 body.active #splash {
@@ -236,14 +246,14 @@ body.active #control-panel {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	background-color: rgba(0, 0, 0, 0.1);
-	border-color: rgba(0, 0, 0, 0.5);
+	background-color: rgba(var(--colortheme-rgb), 0.1);
+	border-color: rgba(var(--colortheme-rgb), 0.5);
 	padding: .25rem;
 	width: 100%;
 }
 
 #go-back-button:hover {
-	background-color: rgba(0, 0, 0, 0.15)
+	background-color: rgba(var(--colortheme-rgb), 0.15)
 }
 
 #go-back-button > svg {
@@ -276,7 +286,7 @@ body.active #control-panel {
 	font-size: 2.5rem;
 	font-weight: bold;
 	text-align: center;
-	background-color: rgba(var(--color2-rgb), 0.2);
+	background-color: rgba(var(--colortheme-rgb), 0.2);
 }
 
 #misc-panel section h6 {
@@ -342,7 +352,7 @@ body.active #control-panel {
 	align-items: center;
 	justify-content: center;
 	position: relative;
-	background-color: rgba(var(--colorwhite-rgb), 0.5);
+	background-color: rgba(var(--colorwhite-rgb), 0.4);
 	color: black;
 	padding: 2rem;
 	text-align: center;
@@ -367,7 +377,7 @@ body.active #control-panel {
 	left: 20%;
 	border-width: 4rem 0 0 4rem;
 	border-style: solid;
-	border-color: rgba(220,220,220, 0.5) transparent;
+	border-color: rgba(var(--colorwhite-rgb), 0.4) transparent;
 	display: block;
 	width: 0;
 }
@@ -386,6 +396,7 @@ body.active #control-panel {
 	top: 40%;
 	width: 800px !important;
 	transition: transform .1s ease-in-out;
+	filter: brightness(0.80);
 }
 
 #quote-dandy-dan > img {
@@ -404,62 +415,175 @@ body.active #control-panel {
 	background-color: transparent;
 }
 
-#top-panel {
+body.active #sun {
+	top: 5%;
+}
+
+#sun {
 	position: absolute;
-	top: -200%;
-	width: 100vw;
-	min-height: 25vh;
+	top: -150%;
+	left: 25%;
+	transform: translate(-50%, -50%);
+	width: 25rem;
+	height: 25rem;
+	margin: 3rem auto;
+	background: radial-gradient(transparent 50%, white), radial-gradient(yellow, transparent 70%);
+	-webkit-mask-image: radial-gradient(rgba(0, 0, 0, 1.0) 40%, transparent 65%);
+	mask-image: radial-gradient(rgba(0, 0, 0, 1.0) 40%, transparent 65%);
+	border-radius: 50%;
+	transition: top 1s ease-in-out;
+	z-index: 1;
+}
+
+#sun::after,
+#sun::before {
+	 content: '';
+	 position: absolute;
+	 top: 0;
+	 left: 0;
+	 width: 100%;
+	 height: 100%;
+	 transform-origin: center;
+	 border-radius: 50%;
+	 -webkit-mask-image: radial-gradient(rgba(0, 0, 0, 1.0) 40%, transparent 65%);
+	 mask-image: radial-gradient(rgba(0, 0, 0, 1.0) 40%, transparent 65%);
+ }
+
+#sun::before {
+	 background: repeating-conic-gradient(from 0deg, yellow 0deg 20deg, transparent 20deg 40deg);
+	 animation: rotate 120s linear, scale 3s linear infinite;
+ }
+
+#sun::after {
+	 background: radial-gradient(yellow, orange 27%, transparent calc(27% + 3px) 100%), radial-gradient(gold, transparent 70%), repeating-conic-gradient(from 0deg, gold 0deg 5deg, transparent 5deg 10deg);
+	 transform: rotate(15deg);
+	 animation: rotate 40s linear;
+ }
+
+body.active .cloud {
+	top: 50%;
+}
+
+body.active .cloud:nth-child(2) {
+	top: 25%;
+	animation-delay: 3s;
+}
+
+body.active .cloud:nth-child(3) {
+	top: 60%;
+	animation-delay: 5.5s;
+}
+
+.cloud {
+	position: absolute;
+	top: -250%;
+	left: -50%;
+	transform: translate(-50%, -150%) scale(0.8);
+	transition: top 1s ease-in-out;
+	animation: drift 30s none infinite;
+	z-index: 2;
+}
+
+.cloud > div {
+	background: rgba(255, 255, 255);
+	width: 300px;
+	height: 100px;
+	border-radius: 150px;
+	box-shadow: 10px 10px rgba(0,0,0,0.2);
+	margin: 1rem;
+}
+
+.cloud > div:after {
+	content: '';
+	background: rgba(255, 255, 255);
+	position: absolute;
+	width: 100px;
+	height: 100px;
+	border-radius: 50%;
+	top: -50px;
+	left: 50px;
+	margin: 1rem;
+}
+
+.cloud > div:before {
+	content: '';
+	background: rgba(255, 255, 255);
+	position: absolute;
+	width: 170px;
+	height: 150px;
+	border-radius: 50%;
+	top: -90px;
+	left: 100px;
+	margin: 1rem;
+}
+
+#billboard {
+	position: absolute;
+	left: 0;
+	right: 0;
+	margin-left: auto;
+	margin-right: auto;
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-items: center;
+	justify-content: center;
 	text-align: center;
-	animation: rainbow 10s ease-in-out infinite alternate;
+
+	width: 75vw;
+	max-width: 750px;
+
+	top: -200%;
 	transition: top 1s ease-in-out;
 	opacity: 0;
+	user-select: none;
 }
 
-body.active #top-panel {
-	top: 0;
+body.active #billboard {
+	top: 10vh;
 	opacity: 1;
 }
 
-#bottom-panel {
-	position: absolute;
-	bottom: -200%;
-	width: 100vw;
-	min-height: 5vh;
-	text-align: center;
-	animation: rainbow 10s ease-in-out infinite alternate;
-	transition: bottom 1s ease-in-out;
-	font-style: italic;
-	opacity: 0;
+#billboard > div.bar {
+	height: .75rem;
+	width: 102%;
+	margin-top: 5px;
+	background-color: gray;
+	border: 1px solid dimgray;
+	z-index: 6;
 }
 
-body.active #bottom-panel {
-	bottom: 0;
-	opacity: 1;
-}
-
-#progress-bar {
-	width: 100%;
-	height: 0.25rem;
+#billboard > div.legs {
+	position: relative;
+	width: 80%;
+	height: 50vh;
+	top: -5vh;
+	z-index: 5;
 	display: flex;
-	align-items: center;
-	justify-content: center;
-	background-color: rgba(0, 0, 0, 0.05);
+	flex-direction: row;
+	justify-content: space-between;
 }
 
-#progress-value {
+.legs > div {
+	width: 1rem;
 	height: 100%;
-	width: 100%;
-	transition: width .5s ease-in-out;
-	animation: rainbow-reverse 10s infinite alternate;
-	opacity: 0.5;
+	background-color: gray;
+	border: 1px solid dimgray;
 }
 
 #greeting {
-	font-size: 6rem;
+	display: block;
+	z-index: 6;
+	border: 4px solid gray;
+	box-shadow: inset 0 0 5px gold;
+	padding: 2rem;
+	min-height: 20vh;
+	font-size: 10cqb;
 	font-weight: bold;
 	width: 100%;
-	padding: 1rem;
-	background-color: rgba(0, 0, 0, 0.05);
+/*	background-color: var(--colortheme-hex);*/
+	animation: rainbow 5s ease-in-out infinite alternate;
 }
 
 .word {
@@ -473,10 +597,79 @@ body.active #bottom-panel {
 	text-shadow:
 			0 0 calc(var(--glow-size)) #fff,
 			0 0 calc(var(--glow-size) * 2) #fff,
-			0 0 calc(var(--glow-size) * 3) var(--color6-hex),
-			0 0 calc(var(--glow-size) * 4) var(--color6-hex),
-			0 0 calc(var(--glow-size) * 5) var(--color6-hex),
-			0 0 calc(var(--glow-size) * 6) var(--color6-hex);
+			0 0 calc(var(--glow-size) * 3) rgba(255, 215, 0, 0.25),
+			0 0 calc(var(--glow-size) * 4) rgba(255, 215, 0, 0.25),
+			0 0 calc(var(--glow-size) * 5) rgba(255, 215, 0, 0.25),
+			0 0 calc(var(--glow-size) * 6) rgba(255, 215, 0, 0.25);
+}
+
+#grass {
+	position: absolute;
+	left: 0;
+	right: 0;
+	margin-left: auto;
+	margin-right: auto;
+	bottom: -200%;
+	width: 125vw;
+	height: 25dvh;
+	transition: bottom 1s ease-in-out;
+	background-color: green;
+	z-index: 4;
+}
+
+body.active #grass {
+	bottom: 0;
+}
+
+#grass > .lawn {
+	left: 0;
+	right: 0;
+	margin-left: auto;
+	margin-right: auto;
+	height: 3vh;
+	width: 100%;
+	background-size: 6px 6px !important;
+	background:
+			linear-gradient(to right, rgba(0, 100, 0, 0.7) 1px, transparent 3px);
+	margin-top: -.75vh;
+	animation: sway 3s ease-in-out infinite alternate;
+}
+
+
+#grass > .lawn:nth-child(9n+1) {
+	animation-delay: .4s;
+}
+
+#grass > .lawn:nth-child(9n+2) {
+	animation-delay: .91s;
+}
+
+#grass > .lawn:nth-child(9n+3) {
+	animation-delay: 1.39s;
+}
+
+#grass > .lawn:nth-child(9n+4) {
+	animation-delay: 1.86s;
+}
+
+#grass > .lawn:nth-child(9 + 5) {
+	animation-delay: 2.21s;
+}
+
+#grass > .lawn:nth-child(9n+6) {
+	animation-delay: .6s;
+}
+
+#grass > .lawn:nth-child(9n+7) {
+	animation-delay: 1.51s;
+}
+
+#grass > .lawn:nth-child(9n+ 8) {
+	animation-delay: 1.98s;
+}
+
+#grass > .lawn:nth-child(9n+ 9) {
+	animation-delay: 2.41s;
 }
 
 #dandy-dan {
@@ -485,13 +678,14 @@ body.active #bottom-panel {
 	right:0;
 	bottom: -300%;
 	width: 100vw;
-	height: 75vh;
+	height: 65vh;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	overflow: hidden;
-	z-index: 3;
+	z-index: 8;
 	transition: bottom 1s ease-in-out;
+	user-select: none;
 }
 
 body.active #dandy-dan {
@@ -547,7 +741,7 @@ main.error > p {
 }
 
 body.active .bg.right {
-/*	right: 250%;*/
+	right: 250%;
 }
 
 .bg.left {
@@ -555,7 +749,7 @@ body.active .bg.right {
 }
 
 body.active .bg.left {
-/*	left: 250%;*/
+	left: 250%;
 }
 
 .bg {
@@ -571,7 +765,7 @@ body.active .bg.left {
 }
 
 body.active .bg {
-/*	opacity: 0;*/
+	opacity: 0;
 }
 
 .bg2 {
@@ -633,7 +827,7 @@ body.active .bg {
 	transform: translate(-50%, var(--y));
 	width: var(--initialSize);
 	aspect-ratio: 1;
-	z-index: 2;
+	z-index: 3;
 	background:
 			radial-gradient(circle, var(--color1) var(--particleSize), #0000 0) 50% 0%,
 			radial-gradient(circle, var(--color2) var(--particleSize), #0000 0) 100% 50%,
@@ -775,8 +969,8 @@ body.active .bg {
 }
 
 .firework.f5 {
-	--x: -10vmin;
-	--y: 10vmin;
+	--x: -30vmin;
+	--y: -80vmin;
 }
 
 .firework.f5,
@@ -788,9 +982,9 @@ body.active .bg {
 	--color4: YellowGreen;
 	--color5: Yellow;
 	--color6: WhiteSmoke;
-	--finalSize: 30vmin;
-	left: 20%;
-	top: 50%;
+	--finalSize: 45vmin;
+	left: 80%;
+	top: 70%;
 	animation-delay: 0.1s;
 }
 
@@ -815,33 +1009,13 @@ body.active .bg {
 }
 
 .firework.f7 {
-	--x: -30vmin;
-	--y: -15vmin;
+	--x: 0vmin;
+	--y: -70vmin;
 }
 
 .firework.f7,
 .firework.f7::before,
 .firework.f7::after {
-	--color1: pink;
-	--color2: violet;
-	--color3: fuchsia;
-	--color4: orchid;
-	--color5: plum;
-	--color6: lavender;
-	--finalSize: 40vmin;
-	left: 80%;
-	top: 80%;
-	animation-delay: 0.2s;
-}
-
-.firework.f8 {
-	--x: 0vmin;
-	--y: -15vmin;
-}
-
-.firework.f8,
-.firework.f8::before,
-.firework.f8::after {
 	--color1: yellow;
 	--color2: gold;
 	--color3: DarkOrange;
@@ -863,6 +1037,52 @@ body.active .bg {
 	}
 }
 
+@keyframes drift {
+	0% {
+		left: -50%;
+	}
+	100% {
+		left: 200%;
+	}
+}
+
+@keyframes sway {
+	0% {
+		transform: translateX(10px);
+	}
+	100% {
+		transform: translateX(-10px);
+	}
+}
+
+@keyframes rotate {
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
+@keyframes scale {
+	0% {
+		transform: scale(1);
+	}
+	20% {
+		transform: scale(1.2);
+	}
+	40% {
+		transform: scale(0.8);
+	}
+	60% {
+		transform: scale(1.1);
+	}
+	70% {
+		transform: scale(0.9);
+	}
+	100% {
+		transform: scale(1);
+	}
+}
+
+
 @keyframes shimmer {
 	0% {
 		background-position: top left;
@@ -881,104 +1101,56 @@ body.active .bg {
 	}
 }
 
-@keyframes rainbow-reverse {
-	0% {
-		color: rgba(221, 58, 21, 0.8);
-		background-color: rgba(148, 205, 51, 0.8);
-	}
-	10% {
-		color: rgba(220, 36, 61, 0.8);
-		background-color: rgba(159, 207, 46, 0.8);
-	}
-	20% {
-		color: rgba(209, 30, 90, 0.8);
-		background-color: rgba(169, 208, 41, 0.8);
-	}
-	30% {
-		color: rgba(189, 41, 114, 0.8);
-		background-color: rgba(180, 209, 36, 0.8);
-	}
-	40% {
-		color: rgba(163, 56, 131, 0.8);
-		background-color: rgba(191, 210, 32, 0.8);
-	}
-	50% {
-		color: rgba(132, 68, 141, 0.8);
-		background-color: rgba(201, 211, 27, 0.8);
-	}
-	60% {
-		color: rgb(101, 75, 142, 0.8);
-		background-color: rgba(212, 212, 23, 0.8);
-	}
-	70% {
-		color: rgb(72, 79, 135, 0.8);
-		background-color: rgba(223, 213, 21, 0.8);
-	}
-	80% {
-		color: rgba(49, 79, 122, 0.8);
-		background-color: rgba(234, 213, 19, 0.8);
-	}
-	90% {
-		color: rgba(39, 76, 106, 0.8);
-		background-color: rgba(244, 214, 19, 0.8);
-	}
-	100% {
-		color: rgba(42, 72, 88, 0.8);
-		background-color: rgba(255, 214, 21, 0.8);
-	}
-}
-
 @keyframes rainbow {
 	0% {
-		background-color: rgba(221, 58, 21, 0.8);
-		color: rgba(148, 205, 51, 0.8);
+		background-color: rgba(221, 58, 21, 1.0);
+		color: rgba(148, 205, 51, 1.0);
 	}
 	10% {
-		background-color: rgba(220, 36, 61, 0.8);
-		color: rgba(159, 207, 46, 0.8);
+		background-color: rgba(220, 36, 61, 1.0);
+		color: rgba(159, 207, 46, 1.0);
 	}
 	20% {
-		background-color: rgba(209, 30, 90, 0.8);
-		color: rgba(169, 208, 41, 0.8);
+		background-color: rgba(209, 30, 90, 1.0);
+		color: rgba(169, 208, 41, 1.0);
 	}
 	30% {
-		background-color: rgba(189, 41, 114, 0.8);
-		color: rgba(180, 209, 36, 0.8);
+		background-color: rgba(189, 41, 114, 1.0);
+		color: rgba(180, 209, 36, 1.0);
 	}
 	40% {
-		background-color: rgba(163, 56, 131, 0.8);
-		color: rgba(191, 210, 32, 0.8);
+		background-color: rgba(163, 56, 131, 1.0);
+		color: rgba(191, 210, 32, 1.0);
 	}
 	50% {
-		background-color: rgba(132, 68, 141, 0.8);
-		color: rgba(201, 211, 27, 0.8);
+		background-color: rgba(132, 68, 141, 1.0);
+		color: rgba(201, 211, 27, 1.0);
 	}
 	60% {
-		background-color: rgb(101, 75, 142, 0.8);
-		color: rgba(212, 212, 23, 0.8);
+		background-color: rgb(101, 75, 142, 1.0);
+		color: rgba(212, 212, 23, 1.0);
 	}
 	70% {
-		background-color: rgb(72, 79, 135, 0.8);
-		color: rgba(223, 213, 21, 0.8);
+		background-color: rgb(72, 79, 135, 1.0);
+		color: rgba(223, 213, 21, 1.0);
 	}
 	80% {
-		background-color: rgba(49, 79, 122, 0.8);
-		color: rgba(234, 213, 19, 0.8);
+		background-color: rgba(49, 79, 122, 1.0);
+		color: rgba(234, 213, 19, 1.0);
 	}
 	90% {
-		background-color: rgba(39, 76, 106, 0.8);
-		color: rgba(244, 214, 19, 0.8);
+		background-color: rgba(39, 76, 106, 1.0);
+		color: rgba(244, 214, 19, 1.0);
 	}
 	100% {
-		background-color: rgba(42, 72, 88, 0.8);
-		color: rgba(255, 214, 21, 0.8);
+		background-color: rgba(42, 72, 88, 1.0);
+		color: rgba(255, 214, 21, 1.0);
 	}
 }
 
 @media screen and (max-width: 1000px) {
 	#greeting {
-		font-size: 5rem;
-		padding: 0.5rem;
+		font-size: 8cqb;
 	}
 
 	#start-button {
@@ -1001,13 +1173,13 @@ body.active .bg {
 }
 
 @media screen and (max-width: 850px) {
-	#greeting {
-		font-size: 4rem;
-		padding: 0;
+
+	#billboard {
+		width: 90vw;
 	}
 
 	#dandy-dan {
-		height: 65vh;
+		height: 55vh;
 	}
 
 	#start-button {
@@ -1069,14 +1241,14 @@ body.active .bg {
 
 	.firework.f4 {
 		--x: -30vmin;
-		--y: -90vmin;
+		--y: -110vmin;
 	}
 
 	.firework.f4,
 	.firework.f4::before,
 	.firework.f4::after {
 		--finalSize: 40vmin;
-		left: 90%;
+		left: 75%;
 		top: 90%;
 	}
 

@@ -95,7 +95,7 @@
 
             handleAudioTimeUpdate() {
                 const audioSampleTolerance = 500
-                const {currentTime, duration} = this.getAudio()
+                const { currentTime } = this.getAudio()
 
                 for (const [time, selector] of DandyDayController.focusSchedule) {
                     const timeUntilFocus = (time - currentTime) * 1000
@@ -105,10 +105,8 @@
                     }
                 }
 
-                document.getElementById("progress-value").style.width = `${100 - ((currentTime / duration) * 100)}%`
-
                 if (currentTime >= 25 && document.querySelectorAll(".firework").length === 0) {
-                    const numFireworks = 8;
+                    const numFireworks = 7;
                     const body = document.querySelector("body")
                     Array.from(Array(numFireworks).keys()).map(i => {
                         const firework = document.createElement("div")
@@ -128,8 +126,8 @@
             }
 
             stopExperience() {
-                document.getElementById("splash").classList.remove("hide")
                 document.body.classList.remove("active")
+                document.getElementById("splash").classList.remove("hide")
                 document.querySelectorAll('.firework').forEach(e => e.remove());
 
                 const audio = this.getAudio()
@@ -309,7 +307,7 @@
                 <blockquote></blockquote>
                 <div class="spacer"></div>
                 <div id="quote-dandy-dan">
-                    <img src="image/smile.png" alt="A smiling man wearing a bowling hat, a rainbow plaid blazer, and a fake moustache gives two thumbs up.">
+                    <img src="image/smile.png" alt="A smiling man wearing a bowling hat, a rainbow plaid blazer, and a fake moustache gives two thumbs up." draggable="false">
                     <button id="new-quote-button" onclick="dandyDayController.onButtonClick(event)" ontouchstart="dandyDayController.onButtonClick(event)"></button>
                 </div>
             </section>
@@ -356,10 +354,10 @@
             </section>
             <section id="about-section" class="hide">
                 <p>
-                    Created, designed, and developed by someone with time.
+                    Created, designed, and developed by a guy from the internet.
                 </p>
                 <p>
-                    Original lyrics and music by someone with talent.
+                    Original lyrics and music by a totally different guy also from the internet.
                 </p>
                 <br/>
                 <p style="font-style: italic; font-size: .85rem;">
@@ -368,22 +366,53 @@
             </section>
         </div>
     </main>
-    <div id="top-panel" class="background-container">
-        <h1 id="greeting" class="shimmer">
+    <div class="cloud">
+        <div></div>
+    </div>
+    <div class="cloud">
+        <div></div>
+    </div>
+    <div class="cloud">
+        <div></div>
+    </div>
+    <div id="sun"></div>
+    <div id="billboard">
+        <h1 id="greeting">
             <span class="word" id="have">Have</span>
             <span class="word" id="a">A</span>
             <span class="word" id="dan">Dan</span><span class="word" id="dy">dy</span>
             <span class="word" id="day">Day!</span>
         </h1>
+        <div class="bar"></div>
+        <div class="legs">
+            <div class="left"></div>
+            <div class="right"></div>
+        </div>
     </div>
     <div id="dandy-dan">
-        <img class="dance" src="image/smile.png" alt="A smiling man wearing a bowling hat, a rainbow plaid blazer, and a fake moustache gives two thumbs up.">
+        <img class="dance" src="image/smile.png" alt="A smiling man wearing a bowling hat, a rainbow plaid blazer, and a fake moustache gives two thumbs up." draggable="false">
     </div>
-    <div id="bottom-panel" class="background-container">
-        <div id="progress-bar">
-            <div id="progress-value">
-            </div>
-        </div>
+    <div id="grass">
+        <div class="lawn"></div>
+        <div class="lawn"></div>
+        <div class="lawn"></div>
+        <div class="lawn"></div>
+        <div class="lawn"></div>
+        <div class="lawn"></div>
+        <div class="lawn"></div>
+        <div class="lawn"></div>
+        <div class="lawn"></div>
+        <div class="lawn"></div>
+        <div class="lawn"></div>
+        <div class="lawn"></div>
+        <div class="lawn"></div>
+        <div class="lawn"></div>
+        <div class="lawn"></div>
+        <div class="lawn"></div>
+        <div class="lawn"></div>
+        <div class="lawn"></div>
+        <div class="lawn"></div>
+        <div class="lawn"></div>
     </div>
     <div class="bg right"></div>
     <div class="bg right bg2"></div>

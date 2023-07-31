@@ -451,13 +451,13 @@ body.active #sun {
 
 #sun::before {
 	 background: repeating-conic-gradient(from 0deg, yellow 0deg 20deg, transparent 20deg 40deg);
-	 animation: rotate 120s linear, scale 3s linear infinite;
+	 animation: rotate 120s linear infinite, scale 3s linear infinite;
  }
 
 #sun::after {
 	 background: radial-gradient(yellow, orange 27%, transparent calc(27% + 3px) 100%), radial-gradient(gold, transparent 70%), repeating-conic-gradient(from 0deg, gold 0deg 5deg, transparent 5deg 10deg);
 	 transform: rotate(15deg);
-	 animation: rotate 40s linear;
+	 animation: rotate 40s linear infinite;
  }
 
 body.active .cloud {
@@ -1048,10 +1048,10 @@ body.active .bg {
 
 @keyframes sway {
 	0% {
-		transform: translateX(10px);
+		transform: translateX(-30px);
 	}
 	100% {
-		transform: translateX(-10px);
+		transform: translateX(-15px);
 	}
 }
 

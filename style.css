@@ -364,6 +364,7 @@ body.active #control-panel {
 	z-index: 2;
 	top: -200%;
 	transition: top 0.5s ease-in-out;
+	line-height: 1.1;
 }
 
 #quote-section.show-quote > blockquote {

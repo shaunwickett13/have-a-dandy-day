@@ -212,7 +212,11 @@
                     this.hideSlideDownPanel()
                 } else if ("new-quote-button" === target.id) {
                     this.showNewQuote()
+                } else {
+                    return;
                 }
+
+                this.hideLabel(target)
             }
 
             incrementButtonClickCount() {
@@ -329,9 +333,29 @@
                     Very good question.
                 </p>
 
+                <h6>How much time did you spend making this?</h6>
+                <p>
+                    Far more time than I care to admit.
+                </p>
+
                 <h6>Who is Dandy Dan?</h6>
                 <p>
                     The dandiest man on the internet.
+                </p>
+
+                <h6>What is Dandy Dan's life story?</h6>
+                <p>
+                    He didn't exist for most of human history. Then this website was created and he poofed into existence. Now he will dance and be dandy for all of eternity. That is pretty much all there is to it.
+                </p>
+
+                <h6>Where is the beautiful vista that Dandy Dan is dancing in located?</h6>
+                <p>
+                    In Dandyland of course.
+                </p>
+
+                <h6>Can I visit Dandyland?</h6>
+                <p>
+                    With your imagination, anything is possible.
                 </p>
 
                 <h6>My day isn't that dandy. What should I do?</h6>
@@ -356,13 +380,25 @@
                     <li>All of the above.</li>
                     <li>None of the above.</li>
                 </ul>
+
+                <h6>The dandy song is stuck in my head. What can I do?</h6>
+                <p>
+                    Unfortunately not much. It is a very catchy tune. In fact, some scientists are saying that it may be the catchiest tune ever created. It will likely be stuck in your head until the day you die.
+                </p>
+
+                <h6>I dislike Dandy Dan and his dandy song. How can I express my displeasure?</h6>
+                <p>
+                    I recommend turning your head to the sky and howling, "Curse you Dandy Dan and your dandy song! I do not find you dandy!".
+                    <br/><br/>
+                    You may then close the website and proceed with your day.
+                </p>
             </section>
             <section id="about-section" class="hide">
                 <p>
-                    Created, designed, and developed by a guy.
+                    <span style="font-weight: bold">Created, designed, and developed</span> by a person that knows how to create, design, and develop websites.
                 </p>
                 <p>
-                    Original lyrics and music by a totally different guy.
+                    <span style="font-weight: bold">Original lyrics and music</span> by a person who is very lyrically and musically talented.
                 </p>
                 <br/>
                 <p style="font-style: italic; font-size: .85rem;">

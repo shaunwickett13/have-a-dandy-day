@@ -482,7 +482,7 @@ body.active .cloud:nth-child(3) {
 	transform: translate(-50%, -150%) scale(0.8);
 	transition: top 1s ease-in-out;
 	animation: drift 30s none infinite;
-	z-index: 2;
+	z-index: 3;
 }
 
 .cloud > div {
@@ -516,6 +516,35 @@ body.active .cloud:nth-child(3) {
 	top: -90px;
 	left: 100px;
 	margin: 1rem;
+}
+
+#mountain {
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+	margin-left: auto;
+	margin-right: auto;
+
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+
+	width: 2500px;
+	height: 70dvh;
+	z-index: 2;
+
+
+	bottom: -200%;
+	transition: bottom 1s ease-in-out;
+}
+
+#mountain > img {
+	width: 100%;
+	filter: drop-shadow(0 0 5px rgba(0,0,0,0.35));
+}
+
+body.active #mountain {
+	bottom: 25dvh;
 }
 
 #billboard {
@@ -1203,10 +1232,6 @@ body.active .bg {
 	#quote-dandy-dan {
 		top: 40%;
 		width: 650px !important;
-	}
-
-	#quote-section > blockquote {
-		font-size: 7cqw;
 	}
 
 	.firework.f1 {

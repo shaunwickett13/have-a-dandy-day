@@ -60,24 +60,25 @@
             }
 
             static quotes = [
-                "Keep your chin up, your spirit bright, and your outfit dazzling. That's the recipe for a dandy day! If you want the recipe for meatless chili, I can not help you at all!",
+                "Keep your chin up, your spirit bright, and your outfit dazzling. That's the recipe for a dandy day! If you want the recipe for meatless chili, I can not help you!",
                 "In Dandyland, we don't have bad days, just different shades of dandy! Except for the time the Dandyland volcano erupted. That was a bad day!",
                 "Remember, wherever you are, you're always just a hop, skip, and a jolly jump away from a dandy day! Unless you're on the edge of a cliff. Then you're a hop, skip, and a jolly jump away from a dreadful drop!",
                 "If your day feels as flat as a pancake, just add some syrup of silliness and a dollop of dandy! I never liked pancakes! Waffles are much better!",
                 "Every morning is a chance to make the world a more delightful and dandy place! Every night is another chance to sleep! Those are facts!",
-                "My grandmother always said, 'Don't climb trees while drinking spoiled milk.' She had a lot of interesting advice! Rest in peace!",
+                "My grandmother always said, \"Don't climb trees while drinking spoiled milk.\" She had a lot of interesting advice! Rest in peace!",
                 "I'm on a diet, I've decided to cut down on negativity and fill my plate with dandy! I usually have seconds, thirds, and fourths!",
                 "Ever find yourself up the creek without a paddle? Build a sail from your dreams and let the winds of whimsy guide you! Watch out for creek sharks!",
                 "Am I a mad man, or just the pinnacle of dandy? The jury is still out! Get back to the courtroom you lazy bums!",
-                "Some people say my moustache is fake. How wrong they are! It's so hairy and real! Trust me!",
-                "A racoon once witnessed me practicing my dandy dance. It wailed like a banshee and scurried off never to be seen again!",
-                "They said, 'Dress for the job you want.' So I put on my bowling hat and rainbow blazer and started dancing! No one would hire me! Their loss!",
-                "A kid once asked me if I was a magician. I told him I was Dandy Dan and then I blasted him with a confetti cannon. His parents were not happy! Classic prank!",
-                "If life gives you lemons, squeeze them into the eyes of your naysayers. Just kidding!",
+                "Some people say my moustache is fake. It's hairy and real! Trust me!",
+                "A racoon once witnessed me practicing my dandy dance. It wailed like a banshee and scurried off never to be seen again! I think it had rabies!",
+                "They said, \"Dress for the job you want.\" So I put on my bowling hat and rainbow blazer and started dancing! For some reason no one would hire me! Oh well!",
+                "A guy once asked me if I was a magician. I told him I was Dandy Dan and then I blasted him with a confetti cannon. It was a classic prank!",
+                "If life gives you lemons, squeeze them into the eyes of your naysayers. Just kidding! Do not do that!",
                 "This morning I bashed my toe on the wall four times in a row. I was swearing like a sailor! Sorry!",
-                "Sometimes the wheels don't come off the bus and you take a joyride down Dandy Lane instead. Hold on to your britches!",
+                "Sometimes the wheels don't come off the bus and you take a joyride down Dandy Lane instead. Hold on to your britches! It's going to be a bumpy ride!",
+                "I have heard people say, \"You are a strange man Dandy Dan.\" I say to them, \"The people have spoken!\"",
                 /*
-                "... The people have spoken!",
+                "Why walk when you can skip, hop, or sashay? Each step's a dance move when you've got dandy in your DNA! Hopefully you have other things in your DNA too though!",
                 "Some say I'm off the wall but I say, 'Perfect! It's much more fun to bounce around!' Please wear a helmet while you bounce. I would know!",
                 "Stars can't shine without darkness. Likewise, dandy days are made brighter by a dash of the absurd!",
                 "They say time flies when you're having fun. But when you're having a dandy day, it dances!",
@@ -156,7 +157,8 @@
             }
 
             showShare() {
-                const text = `"${DandyDayController.quotes[this.quoteIndex === 0 ? DandyDayController.quotes.length - 1 : this.quoteIndex - 1]}" - Dandy Dan`
+                const quote = DandyDayController.quotes[this.quoteIndex === 0 ? DandyDayController.quotes.length - 1 : this.quoteIndex - 1];
+                const text = `"${quote.replaceAll("\"", "'")}" - Dandy Dan`
                 navigator.share({...DandyDayController.sharePayload, text })
             }
 

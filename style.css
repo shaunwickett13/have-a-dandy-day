@@ -28,7 +28,7 @@ body {
 	line-height: 1;
 }
 ol, ul {
-	list-style: none;
+/*	list-style: none;*/
 }
 blockquote, q {
 	quotes: none;
@@ -86,11 +86,7 @@ body {
 
 li {
 	display: list-item;
-}
-
-ul li:before {
-	content: "•";
-	padding-right: 10px;
+	margin-left: 1rem;
 }
 
 a {

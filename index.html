@@ -134,11 +134,14 @@
                 url: "https://haveadandyday.com"
             }
             const isLocalhost = window.location.href.includes("localhost")
-            const isShareEnabled = navigator && navigator.canShare && navigator.canShare(sharePayload)
+            const isShareEnabled = navigator.canShare && navigator.canShare(sharePayload)
+            const isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0)
 
             function share(text) {
-                if (isShareEnabled) {
+                try {
                     navigator.share({...sharePayload, text})
+                } catch (e) {
+                    console.error("Failed to call navigator.share", e)
                 }
             }
 
@@ -191,11 +194,10 @@
                 addClass(getLabelFor(element), "hide")
             }
 
-            function showBottomSection(panelSelector, button) {
+            function showBottomSection(panelSelector) {
                 addClass("#misc-panel section", "hide")
                 addClass("#splash", "show-misc")
                 removeClass(panelSelector, "hide")
-                hideLabel(button)
             }
 
             function hideBottomSection() {
@@ -270,17 +272,21 @@
                         hideLabel(button)
                     },
                     "#stats-button": (event, button) => {
-                        showBottomSection("#stats-section", button)
+                        showBottomSection("#stats-section")
+                        hideLabel(button)
                         api.getButtonCount().then(count => node("#odometer").innerText = `${count}`)
                     },
                     "#quotes-button": (event, button) => {
-                        showBottomSection("#quote-section", button)
+                        showBottomSection("#quote-section")
+                        hideLabel(button)
                     },
                     "#faq-button": (event, button) => {
-                        showBottomSection("#faq-section", button)
+                        showBottomSection("#faq-section")
+                        hideLabel(button)
                     },
                     "#about-button": (event, button) => {
-                        showBottomSection("#about-section", button)
+                        showBottomSection("#about-section")
+                        hideLabel(button)
                     },
                     "#go-back-button": (event, button) => {
                         hideBottomSection()
@@ -290,31 +296,20 @@
                     }
                 };
 
-                for (const [buttonId, clickHandlerFunction] of Object.entries(buttonClickHandlerMapping)) {
+                for (const [buttonId, clickFunction] of Object.entries(buttonClickHandlerMapping)) {
                     const button = node(buttonId)
-                    const hasLabel = getLabelFor(button)
 
-                    const enhancedClickHandlerFunction = (event) => {
-                        if (event.type === "touchstart") {
-                            event.preventDefault()
-                        }
-                        clickHandlerFunction(event, button)
-                        if (hasLabel) {
-                            hideLabel(button)
-                        }
-                    }
+                    button.addEventListener("click", (event) => clickFunction(event, node(buttonId)))
 
-                    button.addEventListener("click", enhancedClickHandlerFunction)
-                    button.addEventListener("touchstart", enhancedClickHandlerFunction)
-                    if (hasLabel) {
+                    if (getLabelFor(button) != null && !isTouch) {
                         button.addEventListener("mouseenter", () => showLabel(button))
                         button.addEventListener("mouseleave", () => hideLabel(button))
                     }
                 }
 
                 const audio = getAudio()
-                audio.addEventListener("ended", stopExperience);
                 audio.addEventListener("timeupdate", handleAudioTimeUpdate);
+                audio.addEventListener("ended", stopExperience);
 
                 if (!isShareEnabled) {
                     addClass("#share-button", "hide")

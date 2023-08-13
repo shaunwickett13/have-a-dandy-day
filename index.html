@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <title>Have A Dandy Day!</title>
+
 	<meta http-equiv="content-type" content="text/html;" charset="UTF-8" />
     <meta name="description" content="Wherever you are... whoever you are... have a dandy day!" />
     <meta name="keywords" content="dandy, day, positivity, greetings, well wishes" />
@@ -18,20 +20,117 @@
     <meta property="og:image:width" content="1250" />
     <meta property="og:image:height" content="1250" />
 
-    <link rel="stylesheet" href="https://github.hubspot.com/odometer/themes/odometer-theme-default.css" />
-    <script src="https://github.hubspot.com/odometer/odometer.js"></script>
-
     <link rel="apple-touch-icon" sizes="180x180" href="image/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="image/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="image/favicon-16x16.png">
     <link rel="manifest" href="site.webmanifest">
 
+    <link rel="stylesheet" href="https://github.hubspot.com/odometer/themes/odometer-theme-default.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Comfortaa">
     <link rel="stylesheet" type="text/css" href="style.css" media="screen" />
 
+    <script src="https://github.hubspot.com/odometer/odometer.js"></script>
     <script>
-        class DandyDayController {
-            static focusSchedule = [
+        (() => {
+            class QuoteProvider {
+                static #quotes = [
+                    "Keep your chin up, your spirit bright, and your outfit dazzling. That's the recipe for a dandy day! If you want the recipe for meatless chili, look elsewhere!",
+                    "In Dandyland, we don't have bad days, just different shades of dandy! Except for the time the Dandyland volcano erupted. That was a bad day!",
+                    "Remember, wherever you are, you're always just a hop, skip, and a jolly jump away from a dandy day! Unless you're on the edge of a cliff. Then you're a hop, skip, and a jolly jump away from a dreadful drop!",
+                    "If your day feels as flat as a pancake, just add some syrup of silliness and a dollop of dandy! I never liked pancakes! Waffles are much better!",
+                    "Every morning is a chance to make the world a more delightful and dandy place! Every night is another chance to slumber! Those are facts!",
+                    "My grandmother always said, \"Don't climb trees while drinking spoiled milk.\" She had a lot of interesting advice! Rest in peace!",
+                    "I'm on a diet, I've decided to cut down on negativity and fill my plate with dandy! I usually have seconds, thirds, and fourths!",
+                    "Ever find yourself up the creek without a paddle? Build a sail from your dreams and let the winds of whimsy guide you! Watch out for creek sharks!",
+                    "Am I a mad man, or just the pinnacle of dandy? The jury is still out! And no one knows when they'll be back! The judge is furious!",
+                    "Some people say my moustache is fake. It's hairy and real! Trust me!",
+                    "A racoon once witnessed me practicing my dandy dance. It wailed like a banshee and scurried off never to be seen again! I think it had rabies!",
+                    "They said, \"Dress for the job you want.\" So I put on my bowling hat and rainbow blazer and started dancing! No one would hire me! Oh well!",
+                    "A guy once asked me if I was a magician. I told him I was Dandy Dan and then I blasted him with my confetti cannon. It was a classic prank!",
+                    "If life gives you lemons, squeeze them into the eyes of your naysayers. Just kidding! Do not do that!",
+                    "This morning I bashed my toe on the wall four times in a row. I was swearing like a sailor! Sorry!",
+                    "Sometimes the wheels don't come off the bus and you take a joyride down Dandy Lane instead. Hold on to your britches! It's going to be a bumpy ride!",
+                    "I have heard people say, \"You are a strange man Dandy Dan.\" To that I say, \"The people have spoken!\"",
+                    "Some say I'm off the wall but I say, \"Perfect! It's much more fun to bounce around!\" One time, I bounced my noggin right off the ceiling! There was brain damage for sure!",
+                ]
+
+                constructor() {
+                    this.quoteIndex = 0;
+                    this.quotes = QuoteProvider.#quotes
+                        .map(value => ({value, sort: Math.random()}))
+                        .sort((a, b) => a.sort - b.sort)
+                        .map(({value}) => value)
+                }
+
+                increment() {
+                    if (this.quoteIndex === this.quotes.length - 1) {
+                        this.quoteIndex = 0
+                    } else {
+                        this.quoteIndex++
+                    }
+                }
+
+                get() {
+                    return this.quotes[this.quoteIndex]
+                }
+
+                getAndIncrement() {
+                    const quote = this.get();
+                    this.increment();
+                    return quote;
+                }
+            }
+
+            class TextSharer {
+                static #sharePayload = {
+                    title: "Have A Dandy Day!",
+                    url: "https://haveadandyday.com"
+                }
+
+                constructor() {
+                    this.enabled = navigator && navigator.canShare && navigator.canShare(TextSharer.#sharePayload)
+                }
+
+                isEnabled() {
+                    return this.enabled
+                }
+
+                share(text) {
+                    if (this.isEnabled()) {
+                        navigator.share({...TextSharer.#sharePayload, text})
+                    }
+                }
+            }
+
+            class DandyDayApi {
+                static #apiDomainName = "https://api.haveadandyday.com"
+                incrementButtonCount() {
+                    try {
+                        return fetch(`${DandyDayApi.#apiDomainName}/statistics/button`, { method: 'POST' })
+                    } catch (e) {
+                        console.error(`Failed to increment button counter: ${e}`)
+                        return Promise.reject(e)
+                    }
+                }
+
+                getButtonCount() {
+                    try {
+                        return fetch(`${DandyDayApi.#apiDomainName}/statistics/button`)
+                            .then(response => response.json())
+                            .then(response => JSON.parse(response.output).data.map(d => d.count).reduce((x, a) => x + a, 0))
+                    } catch (e) {
+                        console.error(`Failed to get button count: ${e}`)
+                        return Promise.reject(e)
+                    }
+                }
+            }
+
+            const quoteProvider = new QuoteProvider()
+            const textSharer = new TextSharer()
+            const api = new DandyDayApi()
+
+            const isLocalhost = window.location.href.includes("localhost")
+            const focusSchedule = [
                 [3.5, "have"],
                 [4.0, "a"],
                 [4.5, "dan"],
@@ -54,229 +153,200 @@
                 [26.25, "day"],
             ]
 
-            static sharePayload = {
-                title: "Have A Dandy Day!",
-                url: "https://haveadandyday.com"
+            function wait(milliseconds) {
+                return new Promise(resolve => setTimeout(resolve, milliseconds))
             }
 
-            static quotes = [
-                "Keep your chin up, your spirit bright, and your outfit dazzling. That's the recipe for a dandy day! If you want the recipe for meatless chili, look elsewhere!",
-                "In Dandyland, we don't have bad days, just different shades of dandy! Except for the time the Dandyland volcano erupted. That was a bad day!",
-                "Remember, wherever you are, you're always just a hop, skip, and a jolly jump away from a dandy day! Unless you're on the edge of a cliff. Then you're a hop, skip, and a jolly jump away from a dreadful drop!",
-                "If your day feels as flat as a pancake, just add some syrup of silliness and a dollop of dandy! I never liked pancakes! Waffles are much better!",
-                "Every morning is a chance to make the world a more delightful and dandy place! Every night is another chance to slumber! Those are facts!",
-                "My grandmother always said, \"Don't climb trees while drinking spoiled milk.\" She had a lot of interesting advice! Rest in peace!",
-                "I'm on a diet, I've decided to cut down on negativity and fill my plate with dandy! I usually have seconds, thirds, and fourths!",
-                "Ever find yourself up the creek without a paddle? Build a sail from your dreams and let the winds of whimsy guide you! Watch out for creek sharks!",
-                "Am I a mad man, or just the pinnacle of dandy? The jury is still out! And no one knows when they'll be back! The judge is furious!",
-                "Some people say my moustache is fake. It's hairy and real! Trust me!",
-                "A racoon once witnessed me practicing my dandy dance. It wailed like a banshee and scurried off never to be seen again! I think it had rabies!",
-                "They said, \"Dress for the job you want.\" So I put on my bowling hat and rainbow blazer and started dancing! No one would hire me! Oh well!",
-                "A guy once asked me if I was a magician. I told him I was Dandy Dan and then I blasted him with my confetti cannon. It was a classic prank!",
-                "If life gives you lemons, squeeze them into the eyes of your naysayers. Just kidding! Do not do that!",
-                "This morning I bashed my toe on the wall four times in a row. I was swearing like a sailor! Sorry!",
-                "Sometimes the wheels don't come off the bus and you take a joyride down Dandy Lane instead. Hold on to your britches! It's going to be a bumpy ride!",
-                "I have heard people say, \"You are a strange man Dandy Dan.\" To that I say, \"The people have spoken!\"",
-                "Some say I'm off the wall but I say, \"Perfect! It's much more fun to bounce around!\" One time, I bounced my noggin right off the ceiling! There was brain damage for sure!",
-                //"Why walk when you can skip, hop, or sashay? Each step's a dance move when you've got dandy in your DNA! ",
-            ].map(value => ({value, sort: Math.random()})).sort((a, b) => a.sort - b.sort).map(({value}) => value)
-
-            static apiDomainName = "https://api.haveadandyday.com"
-
-            constructor() {
-                this.quoteIndex = 0
-                addEventListener("load", this.onLoad)
+            function node(selector) {
+                return document.querySelector(selector)
             }
 
-            getAudio() {
-                return document.getElementById("jingle")
+            function nodes(selector) {
+                return Array.from(document.querySelectorAll(selector))
             }
 
-            handleAudioTimeUpdate() {
+            function resolveToArray(something) {
+                if (typeof something === "string") {
+                    something = nodes(something)
+                }
+                if (Array.isArray(something)) {
+                    return something
+                }
+                if (something == null || typeof something !== "object") {
+                    return []
+                }
+                return [something]
+            }
+
+            function addClass(something, className) {
+                resolveToArray(something).forEach((e) => e.classList.add(className))
+            }
+
+            function removeClass(something, className) {
+                resolveToArray(something).forEach((e) => e.classList.remove(className))
+            }
+
+            function getAudio() {
+                return node("#jingle")
+            }
+
+            function getLabelFor(element) {
+                return node(`label[for=${element.id}]`)
+            }
+
+            function showLabel(element) {
+                removeClass(getLabelFor(element), "hide")
+            }
+
+            function hideLabel(element) {
+                addClass(getLabelFor(element), "hide")
+            }
+
+            function showBottomSection(panelSelector, button) {
+                addClass("#misc-panel section", "hide")
+                addClass("#splash", "show-misc")
+                removeClass(panelSelector, "hide")
+                hideLabel(button)
+            }
+
+            function hideBottomSection() {
+                removeClass("#splash", "show-misc")
+            }
+
+            function showNewQuote() {
+                addClass("#quote-section", "show-quote")
+                node("#quote-section > blockquote").innerText = quoteProvider.getAndIncrement()
+
+                const instructions = node("#quote-section > .instructions")
+                if (!instructions.classList.contains("hide")) {
+                    wait(250).then(() => addClass(instructions, "hide"))
+                }
+            }
+
+            function startExperience() {
+                addClass(document.body, "active")
+                wait(1000).then(() => addClass("#splash", "hide"))
+                getAudio().play();
+                if (!isLocalhost) {
+                    api.incrementButtonCount()
+                }
+            }
+
+            function handleAudioTimeUpdate() {
                 const audioSampleTolerance = 500
-                const { currentTime } = this.getAudio()
+                const fireworkLaunchTimeSeconds = 25
+                const { currentTime } = getAudio()
 
-                for (const [time, selector] of DandyDayController.focusSchedule) {
+                for (const [time, selector] of focusSchedule) {
                     const timeUntilFocus = (time - currentTime) * 1000
                     if (timeUntilFocus <= audioSampleTolerance) {
-                        setTimeout(() => document.querySelector(`#${selector}.word`).classList.add("focus"), timeUntilFocus)
-                        setTimeout(() => document.querySelector(`#${selector}.word`).classList.remove("focus"), timeUntilFocus + 1000)
+                        wait(timeUntilFocus).then(() => addClass(`#${selector}.word`, "focus"))
+                        wait(timeUntilFocus + 1000).then(() => removeClass(`#${selector}.word`, "focus"))
                     }
                 }
 
-                if (currentTime >= 25 && document.querySelectorAll(".firework").length === 0) {
-                    const numFireworks = 7;
-                    Array.from(Array(numFireworks).keys()).map(i => {
+                if (currentTime >= fireworkLaunchTimeSeconds && nodes(".firework").length === 0) {
+                    for (let i = 0; i < 7; i++) {
                         const firework = document.createElement("div")
-                        firework.classList.add("firework")
-                        firework.classList.add(`f${i + 1}`)
-                        return firework
-                    }).forEach(firework => document.body.appendChild(firework))
+                        addClass(firework, "firework")
+                        addClass(firework, `f${i + 1}`)
+                        document.body.appendChild(firework)
+                    }
                 }
             }
 
-            startExperience() {
-                document.body.classList.add("active")
-                setTimeout(() => document.getElementById("splash").classList.add("hide"), 1000)
-
-                this.getAudio().play();
-                this.incrementButtonClickCount()
-            }
-
-            stopExperience() {
-                document.body.classList.remove("active")
-                document.getElementById("splash").classList.remove("hide")
-                document.querySelectorAll('.firework').forEach(e => e.remove());
-
-                const audio = this.getAudio()
-
+            function stopExperience() {
+                removeClass(document.body, "active")
+                removeClass("#splash", "hide")
+                nodes('.firework').forEach(e => e.remove());
+                const audio = getAudio()
                 audio.pause()
                 audio.currentTime = 0
             }
 
-            showLabel(element) {
-                document.querySelector(`label[for=${element.id}]`).classList.remove("hide")
-            }
-
-            hideLabel(element) {
-                document.querySelector(`label[for=${element.id}]`).classList.add("hide")
-            }
-
-            hideSlideDownPanel() {
-                document.getElementById("splash").classList.remove("show-misc")
-            }
-
-            showShare() {
-                const quote = DandyDayController.quotes[this.quoteIndex === 0 ? DandyDayController.quotes.length - 1 : this.quoteIndex - 1];
-                const text = `"${quote.replaceAll("\"", "'")}" - Dandy Dan`
-                navigator.share({...DandyDayController.sharePayload, text })
-            }
-
-            showStats() {
-                this.showSlideUpPanel()
-                document.getElementById("stats-section").classList.remove("hide")
-                this.updateButtonClickCount()
-            }
-
-            showQuote() {
-                this.showSlideUpPanel()
-                document.getElementById("quote-section").classList.remove("hide")
-            }
-
-            showNewQuote() {
-                document.getElementById("quote-section").classList.add("show-quote")
-                setTimeout(() => {
-                    document.querySelector("#quote-section > .instructions").classList.add("hide")
-                }, 250)
-
-                const { quotes } = DandyDayController
-                document.querySelector("#quote-section > blockquote").innerText = quotes[this.quoteIndex++]
-                if (this.quoteIndex === DandyDayController.quotes.length) {
-                    this.quoteIndex = 0
-                }
-            }
-
-            showFaq() {
-                this.showSlideUpPanel()
-                document.getElementById("faq-section").classList.remove("hide")
-            }
-
-            showAbout() {
-                this.showSlideUpPanel()
-                document.getElementById("about-section").classList.remove("hide")
-            }
-
-            onButtonClick(event) {
-                const {type, target} = event
-
-                if (type === "touchstart") {
-                    event.preventDefault()
-                }
-
-                if ("share-button" === target.id) {
-                    this.showShare()
-                    this.hideLabel(target)
-                } else if ("stats-button" === target.id) {
-                    this.showStats()
-                    this.hideLabel(target)
-                } else if ("quotes-button" === target.id) {
-                    this.showQuote()
-                    this.hideLabel(target)
-                } else if ("faq-button" === target.id) {
-                    this.showFaq()
-                    this.hideLabel(target)
-                } else if ("about-button" === target.id) {
-                    this.showAbout()
-                    this.hideLabel(target)
-                } else if ("go-back-button" === target.id) {
-                    this.hideSlideDownPanel()
-                } else if ("new-quote-button" === target.id) {
-                    this.showNewQuote()
-                }
-            }
-
-            incrementButtonClickCount() {
-                if (window.location.href.includes("localhost")) {
-                    return
-                }
-                try {
-                    fetch(`${DandyDayController.apiDomainName}/statistics/button`, { method: 'POST' })
-                } catch (e) {
-                    console.error(`Failed to increment button counter: ${e}`)
-                }
-            }
-
-            updateButtonClickCount() {
-                try {
-                    fetch(`${DandyDayController.apiDomainName}/statistics/button`)
-                        .then(response => response.json())
-                        .then(response => {
-                            document.getElementById("odometer").innerText = JSON.parse(response.output)
-                                .data
-                                .map(d => d.count)
-                                .reduce((partial, a) => partial + a, 0)
-                        })
-                } catch (e) {
-                    console.error(`Failed to get button count: ${e}`)
-                }
-            }
-
-            showSlideUpPanel() {
-                Array.from(document.querySelectorAll("#misc-panel section")).forEach(element => element.classList.add("hide"))
-                document.getElementById("splash").classList.add("show-misc")
-            }
-
-            onLoad() {
-                if (window.location.href.includes("localhost")) {
+            addEventListener("load", () => {
+                if (isLocalhost) {
                     const livejs = document.createElement("script");
                     livejs.setAttribute("src", "https://livejs.com/live.js")
                     livejs.setAttribute("type", "text/javascript")
                     document.head.appendChild(livejs)
                 }
 
-                if (!navigator.canShare || !navigator.canShare(DandyDayController.sharePayload)) {
-                    document.getElementById("share-button").classList.add("hide")
+                const buttonClickHandlerMapping = {
+                    "#start-button": (event, button) => {
+                        startExperience()
+                    },
+                    "#share-button": (event, button) => {
+                        textSharer.share(`"${quoteProvider.get().replaceAll("\"", "'")}" - Dandy Dan`);
+                        hideLabel(button)
+                    },
+                    "#stats-button": (event, button) => {
+                        showBottomSection("#stats-section", button)
+                        api.getButtonCount().then(count => node("#odometer").innerText = `${count}`)
+                    },
+                    "#quotes-button": (event, button) => {
+                        showBottomSection("#quote-section", button)
+                    },
+                    "#faq-button": (event, button) => {
+                        showBottomSection("#faq-section", button)
+                    },
+                    "#about-button": (event, button) => {
+                        showBottomSection("#about-section", button)
+                    },
+                    "#go-back-button": (event, button) => {
+                        hideBottomSection()
+                    },
+                    "#new-quote-button": (event, button) => {
+                        showNewQuote()
+                    }
+                };
+
+                for (const [buttonId, clickHandlerFunction] of Object.entries(buttonClickHandlerMapping)) {
+                    const button = node(buttonId)
+                    const hasLabel = getLabelFor(button)
+
+                    const enhancedClickHandlerFunction = (event) => {
+                        if (event.type === "touchstart") {
+                            event.preventDefault()
+                        }
+                        clickHandlerFunction(event, button)
+                        if (hasLabel) {
+                            hideLabel(button)
+                        }
+                    }
+
+                    button.addEventListener("click", enhancedClickHandlerFunction)
+                    button.addEventListener("touchstart", enhancedClickHandlerFunction)
+                    if (hasLabel) {
+                        button.addEventListener("mouseenter", () => showLabel(button))
+                        button.addEventListener("mouseleave", () => hideLabel(button))
+                    }
                 }
-                document.getElementById("control-panel").classList.remove("hide")
-            }
-        }
 
-        const dandyDayController = new DandyDayController();
+                const audio = getAudio()
+                audio.addEventListener("ended", stopExperience);
+                audio.addEventListener("timeupdate", handleAudioTimeUpdate);
+
+                if (!textSharer.isEnabled()) {
+                    addClass("#share-button", "hide")
+                }
+
+                removeClass("#control-panel", "hide")
+            })
+        })()
     </script>
-
-    <title>Have A Dandy Day!</title>
 </head>
 <body>
     <main id="splash" class="background-container">
         <nav id="control-panel" class="hide">
-            <button id="start-button" onclick="dandyDayController.startExperience()">click for dandy day</button>
+            <button id="start-button">click for dandy day</button>
             <div id="additional">
                 <div id="additional-buttons">
-                    <button id="share-button" onmouseenter="dandyDayController.showLabel(this)" onmouseleave="dandyDayController.hideLabel(this)" onclick="dandyDayController.onButtonClick(event)" ontouchstart="dandyDayController.onButtonClick(event)">share</button>
-                    <button id="stats-button" onmouseenter="dandyDayController.showLabel(this)" onmouseleave="dandyDayController.hideLabel(this)" onclick="dandyDayController.onButtonClick(event)" ontouchstart="dandyDayController.onButtonClick(event)">count</button>
-                    <button id="quotes-button" onmouseenter="dandyDayController.showLabel(this)" onmouseleave="dandyDayController.hideLabel(this)" onclick="dandyDayController.onButtonClick(event)" ontouchstart="dandyDayController.onButtonClick(event)">quote</button>
-                    <button id="faq-button" onmouseenter="dandyDayController.showLabel(this)" onmouseleave="dandyDayController.hideLabel(this)" onclick="dandyDayController.onButtonClick(event)" ontouchstart="dandyDayController.onButtonClick(event)">faq</button>
-                    <button id="about-button" onmouseenter="dandyDayController.showLabel(this)" onmouseleave="dandyDayController.hideLabel(this)" onclick="dandyDayController.onButtonClick(event)" ontouchstart="dandyDayController.onButtonClick(event)">about</button>
+                    <button id="share-button">share</button>
+                    <button id="stats-button">count</button>
+                    <button id="quotes-button">quote</button>
+                    <button id="faq-button">faq</button>
+                    <button id="about-button">about</button>
                 </div>
                 <div id="additional-info">
                     <label for="share-button" class="hide">share this site to brighten someone else's day</label>
@@ -288,10 +358,9 @@
             </div>
         </nav>
         <div id="misc-panel">
-            <button id="go-back-button" onclick="dandyDayController.onButtonClick(event)" ontouchstart="dandyDayController.onButtonClick(event)">
-                <svg style="pointer-events: none;" fill="currentColor" height="800px" width="800px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                     viewBox="0 0 330 330" xml:space="preserve">
-                    <path fill="currentColor" id="XMLID_224_" d="M325.606,229.393l-150.004-150C172.79,76.58,168.974,75,164.996,75c-3.979,0-7.794,1.581-10.607,4.394
+            <button id="go-back-button">
+                <svg style="pointer-events: none;" fill="currentColor" height="800px" width="800px" viewBox="0 0 330 330">
+                    <path fill="currentColor" d="M325.606,229.393l-150.004-150C172.79,76.58,168.974,75,164.996,75c-3.979,0-7.794,1.581-10.607,4.394
                     l-149.996,150c-5.858,5.858-5.858,15.355,0,21.213c5.857,5.857,15.355,5.858,21.213,0l139.39-139.393l139.397,139.393
                     C307.322,253.536,311.161,255,315,255c3.839,0,7.678-1.464,10.607-4.394C331.464,244.748,331.464,235.251,325.606,229.393z"/>
                 </svg>
@@ -307,8 +376,10 @@
                 <blockquote></blockquote>
                 <div class="spacer"></div>
                 <div id="quote-dandy-dan">
-                    <img src="image/smile.png" alt="A smiling man wearing a bowling hat, a rainbow plaid blazer, and a fake moustache gives two thumbs up." draggable="false">
-                    <button id="new-quote-button" onclick="dandyDayController.onButtonClick(event)" ontouchstart="dandyDayController.onButtonClick(event)"></button>
+                    <img src="image/smile.png"
+                         alt="A smiling man wearing a bowling hat, a rainbow plaid blazer, and a fake moustache gives two thumbs up."
+                         draggable="false">
+                    <button id="new-quote-button"></button>
                 </div>
             </section>
             <section id="faq-section" class="hide">
@@ -440,7 +511,9 @@
         <div></div>
     </div>
     <div id="mountain">
-        <img src="image/mountain.svg"/>
+        <img src="image/mountain.svg"
+             alt="A snowy mountain range in the background."
+             draggable="false"/>
     </div>
     <div id="billboard">
         <h1 id="greeting">
@@ -456,7 +529,10 @@
         </div>
     </div>
     <div id="dandy-dan">
-        <img class="dance" src="image/smile.png" alt="A smiling man wearing a bowling hat, a rainbow plaid blazer, and a fake moustache gives two thumbs up." draggable="false">
+        <img src="image/smile.png"
+             alt="A smiling man wearing a bowling hat, a rainbow plaid blazer, and a fake moustache gives two thumbs up."
+             draggable="false"
+             class="dance"/>
     </div>
     <div id="grass">
         <div class="lawn"></div>
@@ -486,7 +562,7 @@
     <div class="bg left"></div>
     <div class="bg left bg4"></div>
     <div class="bg left bg5"></div>
-    <audio id="jingle" preload="auto" onended="dandyDayController.stopExperience()" ontimeupdate="dandyDayController.handleAudioTimeUpdate()">
+    <audio id="jingle" preload="auto">
         <source src="audio/jingle.mp3" type="audio/mpeg" />
     </audio>
 </body>

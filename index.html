@@ -46,7 +46,7 @@
                     "Some people say my moustache is fake. It's hairy and real! Trust me!",
                     "A racoon once witnessed me practicing my dandy dance. It wailed like a banshee and scurried off never to be seen again! I think it had rabies!",
                     "They said, \"Dress for the job you want.\" So I put on my bowling hat and rainbow blazer and started dancing! No one would hire me! Oh well!",
-                    "A guy once asked me if I was a magician. I told him I was Dandy Dan and then I blasted him with my confetti cannon. It was a classic prank!",
+                    "A person once asked me if I was a magician. I told them I was Dandy Dan and then I blasted them with my confetti cannon. It was a classic prank!",
                     "If life gives you lemons, squeeze them into the eyes of your naysayers. Just kidding! Do not do that!",
                     "This morning I bashed my toe on the wall four times in a row. I was swearing like a sailor! Sorry!",
                     "Sometimes the wheels don't come off the bus and you take a joyride down Dandy Lane instead. Hold on to your britches! It's going to be a bumpy ride!",
@@ -81,27 +81,6 @@
                 }
             }
 
-            class TextSharer {
-                static #sharePayload = {
-                    title: "Have A Dandy Day!",
-                    url: "https://haveadandyday.com"
-                }
-
-                constructor() {
-                    this.enabled = navigator && navigator.canShare && navigator.canShare(TextSharer.#sharePayload)
-                }
-
-                isEnabled() {
-                    return this.enabled
-                }
-
-                share(text) {
-                    if (this.isEnabled()) {
-                        navigator.share({...TextSharer.#sharePayload, text})
-                    }
-                }
-            }
-
             class DandyDayApi {
                 static #apiDomainName = "https://api.haveadandyday.com"
                 incrementButtonCount() {
@@ -126,10 +105,8 @@
             }
 
             const quoteProvider = new QuoteProvider()
-            const textSharer = new TextSharer()
             const api = new DandyDayApi()
 
-            const isLocalhost = window.location.href.includes("localhost")
             const focusSchedule = [
                 [3.5, "have"],
                 [4.0, "a"],
@@ -152,6 +129,18 @@
                 [26, "dy"],
                 [26.25, "day"],
             ]
+            const sharePayload = {
+                title: "Have A Dandy Day!",
+                url: "https://haveadandyday.com"
+            }
+            const isLocalhost = window.location.href.includes("localhost")
+            const isShareEnabled = navigator && navigator.canShare && navigator.canShare(sharePayload)
+
+            function share(text) {
+                if (isShareEnabled) {
+                    navigator.share({...sharePayload, text})
+                }
+            }
 
             function wait(milliseconds) {
                 return new Promise(resolve => setTimeout(resolve, milliseconds))
@@ -277,7 +266,7 @@
                         startExperience()
                     },
                     "#share-button": (event, button) => {
-                        textSharer.share(`"${quoteProvider.get().replaceAll("\"", "'")}" - Dandy Dan`);
+                        share(`"${quoteProvider.get().replaceAll("\"", "'")}" - Dandy Dan`);
                         hideLabel(button)
                     },
                     "#stats-button": (event, button) => {
@@ -327,7 +316,7 @@
                 audio.addEventListener("ended", stopExperience);
                 audio.addEventListener("timeupdate", handleAudioTimeUpdate);
 
-                if (!textSharer.isEnabled()) {
+                if (!isShareEnabled) {
                     addClass("#share-button", "hide")
                 }
 

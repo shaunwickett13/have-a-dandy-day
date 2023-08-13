@@ -352,11 +352,10 @@ body.active #control-panel {
 	align-items: center;
 	justify-content: center;
 	position: relative;
-	background-color: rgba(var(--colorwhite-rgb), 0.4);
+	background-color: rgba(var(--colorwhite-rgb), 0.5);
 	color: black;
 	padding: 2rem;
 	text-align: center;
-	border-radius: 2rem;
 	width: 60%;
 	max-width: 1000px;
 	container-type: inline-size;
@@ -379,7 +378,7 @@ body.active #control-panel {
 	left: 20%;
 	border-width: 4rem 0 0 4rem;
 	border-style: solid;
-	border-color: rgba(var(--colorwhite-rgb), 0.4) transparent;
+	border-color: rgba(var(--colorwhite-rgb), 0.5) transparent;
 	display: block;
 	width: 0;
 }

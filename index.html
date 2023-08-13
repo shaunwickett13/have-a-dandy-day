@@ -68,28 +68,22 @@
                 "My grandmother always said, \"Don't climb trees while drinking spoiled milk.\" She had a lot of interesting advice! Rest in peace!",
                 "I'm on a diet, I've decided to cut down on negativity and fill my plate with dandy! I usually have seconds, thirds, and fourths!",
                 "Ever find yourself up the creek without a paddle? Build a sail from your dreams and let the winds of whimsy guide you! Watch out for creek sharks!",
-                "Am I a mad man, or just the pinnacle of dandy? The jury is still out! Get back to the courtroom you lazy bums!",
+                "Am I a mad man, or just the pinnacle of dandy? The jury is still out! And no one knows when they'll be back! The judge is furious!",
                 "Some people say my moustache is fake. It's hairy and real! Trust me!",
                 "A racoon once witnessed me practicing my dandy dance. It wailed like a banshee and scurried off never to be seen again! I think it had rabies!",
-                "They said, \"Dress for the job you want.\" So I put on my bowling hat and rainbow blazer and started dancing! For some reason no one would hire me! Oh well!",
-                "A guy once asked me if I was a magician. I told him I was Dandy Dan and then I blasted him with a confetti cannon. It was a classic prank!",
+                "They said, \"Dress for the job you want.\" So I put on my bowling hat and rainbow blazer and started dancing! No one would hire me! Oh well!",
+                "A guy once asked me if I was a magician. I told him I was Dandy Dan and then I blasted him with my confetti cannon. It was a classic prank!",
                 "If life gives you lemons, squeeze them into the eyes of your naysayers. Just kidding! Do not do that!",
                 "This morning I bashed my toe on the wall four times in a row. I was swearing like a sailor! Sorry!",
                 "Sometimes the wheels don't come off the bus and you take a joyride down Dandy Lane instead. Hold on to your britches! It's going to be a bumpy ride!",
                 "I have heard people say, \"You are a strange man Dandy Dan.\" To that I say, \"The people have spoken!\"",
-                /*
-                "Why walk when you can skip, hop, or sashay? Each step's a dance move when you've got dandy in your DNA! Hopefully you have other things in your DNA too though!",
-                "Some say I'm off the wall but I say, 'Perfect! It's much more fun to bounce around!' Please wear a helmet while you bounce. I would know!",
-                "Stars can't shine without darkness. Likewise, dandy days are made brighter by a dash of the absurd!",
-                "They say time flies when you're having fun. But when you're having a dandy day, it dances!",
-                "Why walk when you can skip, hop, or sashay? Each step's a dance move when you've got dandy in your DNA!",
-                "I find sanity dreadfully dull. Now, a touch of madness, that's the secret ingredient of a dandy life!",*/
+                "Some say I'm off the wall but I say, \"Perfect! It's much more fun to bounce around!\" One time, I bounced my noggin right off the ceiling! There was brain damage for sure!",
+                //"Why walk when you can skip, hop, or sashay? Each step's a dance move when you've got dandy in your DNA! ",
             ].map(value => ({value, sort: Math.random()})).sort((a, b) => a.sort - b.sort).map(({value}) => value)
 
             static apiDomainName = "https://api.haveadandyday.com"
 
             constructor() {
-                this.buttonCountUpdater = null
                 this.quoteIndex = 0
                 addEventListener("load", this.onLoad)
             }
@@ -112,19 +106,18 @@
 
                 if (currentTime >= 25 && document.querySelectorAll(".firework").length === 0) {
                     const numFireworks = 7;
-                    const body = document.querySelector("body")
                     Array.from(Array(numFireworks).keys()).map(i => {
                         const firework = document.createElement("div")
                         firework.classList.add("firework")
                         firework.classList.add(`f${i + 1}`)
                         return firework
-                    }).forEach(firework => body.appendChild(firework))
+                    }).forEach(firework => document.body.appendChild(firework))
                 }
             }
 
             startExperience() {
-                document.querySelector("body").classList.add("active")
-                setTimeout(() => document.querySelector("#splash").classList.add("hide"), 1000)
+                document.body.classList.add("active")
+                setTimeout(() => document.getElementById("splash").classList.add("hide"), 1000)
 
                 this.getAudio().play();
                 this.incrementButtonClickCount()
@@ -142,18 +135,15 @@
             }
 
             showLabel(element) {
-                const label = document.querySelector(`label[for=${element.id}]`)
-                label.classList.remove("hide")
+                document.querySelector(`label[for=${element.id}]`).classList.remove("hide")
             }
 
             hideLabel(element) {
-                const label = document.querySelector(`label[for=${element.id}]`)
-                label.classList.add("hide")
+                document.querySelector(`label[for=${element.id}]`).classList.add("hide")
             }
 
             hideSlideDownPanel() {
                 document.getElementById("splash").classList.remove("show-misc")
-                clearInterval(this.buttonCountUpdater)
             }
 
             showShare() {
@@ -166,7 +156,6 @@
                 this.showSlideUpPanel()
                 document.getElementById("stats-section").classList.remove("hide")
                 this.updateButtonClickCount()
-                this.buttonCountUpdater = setInterval(this.updateButtonClickCount, 60000)
             }
 
             showQuote() {
@@ -206,23 +195,24 @@
 
                 if ("share-button" === target.id) {
                     this.showShare()
+                    this.hideLabel(target)
                 } else if ("stats-button" === target.id) {
                     this.showStats()
+                    this.hideLabel(target)
                 } else if ("quotes-button" === target.id) {
                     this.showQuote()
+                    this.hideLabel(target)
                 } else if ("faq-button" === target.id) {
                     this.showFaq()
+                    this.hideLabel(target)
                 } else if ("about-button" === target.id) {
                     this.showAbout()
+                    this.hideLabel(target)
                 } else if ("go-back-button" === target.id) {
                     this.hideSlideDownPanel()
                 } else if ("new-quote-button" === target.id) {
                     this.showNewQuote()
-                } else {
-                    return;
                 }
-
-                this.hideLabel(target)
             }
 
             incrementButtonClickCount() {
@@ -351,7 +341,10 @@
 
                 <h6>What is Dandy Dan's life story?</h6>
                 <p>
-                    He didn't exist for most of human history. Then this website was created and he poofed into existence. Now he will dance and be dandy for all of eternity. That is pretty much all there is to it.
+                    He didn't exist for most of human history.
+                    Then this website was created and he poofed into existence.
+                    Now he will dance and be dandy for all of eternity.
+                    That is pretty much all there is to it.
                 </p>
 
                 <h6>Where is the beautiful vista that Dandy Dan is dancing in located?</h6>
@@ -361,17 +354,20 @@
 
                 <h6>Can I visit Dandyland?</h6>
                 <p>
-                    Within your imagination, anything is possible. Within reality, probably not.
+                    Within your imagination, anything is possible.
+                    Within reality, probably not.
                 </p>
 
                 <h6>My day isn't that dandy. What should I do?</h6>
                 <p>
-                    Go experience Dandy Dan and his dandy song. Maybe it will help turn your day around.
+                    Go experience Dandy Dan and his dandy song.
+                    Maybe it will help turn your day around.
                 </p>
 
                 <h6>My day is already too dandy to handle. What should I do?</h6>
                 <p>
-                    Think long and hard before you experience Dandy Dan and his dandy song. That much dandiness may be dangerous.
+                    Think long and hard before you experience Dandy Dan and his dandy song.
+                    That much dandiness may be dangerous.
                 </p>
 
                 <h6>What am I supposed to do after I experience Dandy Dan and his dandy song?</h6>
@@ -379,36 +375,56 @@
                     The possibilities are endless.
                 </p>
                 <ul>
-                    <li>Continue going about your day.</li>
-                    <li>Experience it again.</li>
-                    <li>Send it to someone else so that they can experience it.</li>
-                    <li>Look back on your life and ponder the long chain of events that have led you to the point where you are reading this FAQ.</li>
-                    <li>All of the above.</li>
-                    <li>None of the above.</li>
+                    <li>
+                        Continue going about your day.
+                    </li>
+                    <li>
+                        Experience it again.
+                    </li>
+                    <li>
+                        Share it with someone else so that they can experience it.
+                    </li>
+                    <li>
+                        Look back on your life and ponder the long chain of events
+                        that have led you to the point where you are reading this FAQ.
+                    </li>
+                    <li>
+                        All of the above.
+                    </li>
+                    <li>
+                        None of the above.
+                    </li>
                 </ul>
 
                 <h6>The dandy song is stuck in my head. What can I do?</h6>
                 <p>
-                    Unfortunately not much. It is a very catchy tune. It will likely be stuck in your head for the foreseeable future.
+                    Unfortunately not much.
+                    It is a very catchy tune.
+                    It will likely be stuck in your head for the foreseeable future.
                 </p>
 
                 <h6>I dislike Dandy Dan and his dandy song. How can I express my displeasure?</h6>
                 <p>
-                    You may turn your head to the sky, shake your fists, and howl, "Curse you Dandy Dan and your dandy song! I do not find you dandy!".
+                    You can try turning your head to the sky, shaking your fists,
+                    and howling, "Curse you Dandy Dan and your dandy song!
+                    I do not find you dandy!".
                     <br/><br/>
                     You may then close the website and proceed with your day.
                 </p>
             </section>
             <section id="about-section" class="hide">
                 <p>
-                    <span style="font-weight: bold">Created, designed, and developed</span> by a person that knows how to create, design, and develop websites.
+                    <span style="font-weight: bold">Created, designed, and developed</span>
+                    by a person that knows how to create, design, and develop websites.
                 </p>
                 <p>
-                    <span style="font-weight: bold">Original lyrics and music</span> by a person who is lyrically and musically talented.
+                    <span style="font-weight: bold">Original lyrics and music</span>
+                    by a person who is lyrically and musically talented.
                 </p>
                 <br/>
                 <p style="font-style: italic; font-size: .85rem;">
-                    This website does not use cookies and does not collect, store, or share user data (other than the total number of times the big dandy button was clicked).
+                    This website does not use cookies and does not collect, store, or share user data
+                    (other than the total number of times the big dandy button was clicked).
                 </p>
             </section>
         </div>

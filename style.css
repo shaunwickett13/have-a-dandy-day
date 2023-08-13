@@ -84,9 +84,8 @@ body {
 	touch-action: none;
 }
 
-li {
-	display: list-item;
-	margin-left: 1rem;
+ul, ol {
+	list-style-position: inside;
 }
 
 a {

@@ -42,7 +42,7 @@
                     "My grandmother always said, \"Don't climb trees while drinking spoiled milk.\" She had a lot of interesting advice! Rest in peace!",
                     "I'm on a diet, I've decided to cut down on negativity and fill my plate with dandy! I usually have seconds, thirds, and fourths!",
                     "Ever find yourself up the creek without a paddle? Build a sail from your dreams and let the winds of whimsy guide you! Watch out for creek sharks!",
-                    "Am I a mad man, or just the pinnacle of dandy? The jury is still out! And no one knows when they'll be back! The judge is furious!",
+                    "Am I a mad man, or just the pinnacle of dandy? The jury is still out! And no one knows when they'll be back!",
                     "Some people say my moustache is fake. It's hairy and real! Trust me!",
                     "A racoon once witnessed me practicing my dandy dance. It wailed like a banshee and scurried off never to be seen again! I think it had rabies!",
                     "They said, \"Dress for the job you want.\" So I put on my bowling hat and rainbow blazer and started dancing! No one would hire me! Oh well!",
@@ -51,7 +51,7 @@
                     "This morning I bashed my toe on the wall four times in a row. I was swearing like a sailor! Sorry!",
                     "Sometimes the wheels don't come off the bus and you take a joyride down Dandy Lane instead. Hold on to your britches! It's going to be a bumpy ride!",
                     "I have heard people say, \"You are a strange man Dandy Dan.\" To that I say, \"The people have spoken!\"",
-                    "Some say I'm off the wall but I say, \"Perfect! It's much more fun to bounce around!\" One time, I bounced my noggin right off the ceiling! There was brain damage for sure!",
+                    "Some say I'm off the wall but I say, \"Perfect! It's much more fun to bounce around!\" One time, I bounced my noggin right up into the ceiling! There is lasting damage for sure!",
                 ]
 
                 constructor() {
@@ -135,7 +135,6 @@
             }
             const isLocalhost = window.location.href.includes("localhost")
             const isShareEnabled = navigator.canShare && navigator.canShare(sharePayload)
-            const isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0)
 
             function share(text) {
                 try {
@@ -301,9 +300,17 @@
 
                     button.addEventListener("click", (event) => clickFunction(event, node(buttonId)))
 
-                    if (getLabelFor(button) != null && !isTouch) {
-                        button.addEventListener("mouseenter", () => showLabel(button))
-                        button.addEventListener("mouseleave", () => hideLabel(button))
+                    if (getLabelFor(button) != null) {
+                        button.addEventListener("pointerenter", (event) => {
+                            if (event.pointerType === "mouse"){
+                                showLabel(button)
+                            }
+                        })
+                        button.addEventListener("pointerleave", (event) => {
+                            if (event.pointerType === "mouse") {
+                                hideLabel(button)
+                            }
+                        })
                     }
                 }
 
@@ -376,17 +383,22 @@
 
                 <h6>Why does this exist?</h6>
                 <p>
-                    I thought it would be funny.
+                    To make you smile and give you a chuckle.
                 </p>
 
-                <h6>Why did you think it would be funny?</h6>
+                <h6>Why did you think it would give me a chuckle?</h6>
                 <p>
-                    Very good question.
+                    Hopefully because you find it as funny as I do.
+                </p>
+
+                <h6>Why do you think it's funny?</h6>
+                <p>
+                    That is an exceptional question. I don't really know.
                 </p>
 
                 <h6>How much time did you spend making this?</h6>
                 <p>
-                    Far more time than I care to admit.
+                    More than a little and less than a lot. But either way, probably too much.
                 </p>
 
                 <h6>Who is Dandy Dan?</h6>

@@ -205,8 +205,25 @@
             }
 
             function showNewQuote() {
+                const quoteSection = node("#quote-section")
+                const quoteElement = node("#quote-section > blockquote")
+                const isAlreadyShowing = quoteSection.classList.contains("show-quote")
+                
                 addClass("#quote-section", "show-quote")
-                node("#quote-section > blockquote").innerText = quoteProvider.getAndIncrement()
+                quoteElement.innerText = quoteProvider.getAndIncrement()
+                
+                // Only jiggle if quote is already visible (changing quotes)
+                if (isAlreadyShowing) {
+                    // Add jiggle animation
+                    quoteElement.classList.remove("jiggling")
+                    void quoteElement.offsetWidth // Force reflow to restart animation
+                    quoteElement.classList.add("jiggling")
+                    
+                    // Remove class after animation completes
+                    setTimeout(() => {
+                        quoteElement.classList.remove("jiggling")
+                    }, 400)
+                }
 
                 const instructions = node("#quote-section > .instructions")
                 if (!instructions.classList.contains("hide")) {
@@ -522,8 +539,8 @@
                 </p>
                 <br/>
                 <p style="font-style: italic; font-size: .85rem;">
-                    This website does not use cookies and does not collect, store, or share user data
-                    (other than the total number of times the big dandy button was clicked).
+                    This website does not collect or store any of your precious data
+                    (other than the number of times you click the big dandy button).
                 </p>
             </section>
         </div>

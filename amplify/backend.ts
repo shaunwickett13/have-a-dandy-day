@@ -15,8 +15,8 @@ const backend = defineBackend({
 const functionStack = Stack.of(backend.counterApi.resources.lambda);
 
 // Create DynamoDB table in the same stack as the Lambda function
+// Let CDK generate a unique table name to avoid conflicts
 const counterTable = new Table(functionStack, 'DandyDayCounterTable', {
-  tableName: 'DandyDayCounter',
   partitionKey: {
     name: 'id',
     type: AttributeType.STRING
@@ -26,6 +26,9 @@ const counterTable = new Table(functionStack, 'DandyDayCounterTable', {
 
 // Grant the Lambda function permissions to read/write to the table
 counterTable.grantReadWriteData(backend.counterApi.resources.lambda);
+
+// Pass the table name to the Lambda function as an environment variable
+backend.counterApi.resources.lambda.addEnvironment('TABLE_NAME', counterTable.tableName);
 
 // Create REST API in the same stack
 const api = new LambdaRestApi(functionStack, 'DandyDayApi', {

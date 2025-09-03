@@ -4,7 +4,8 @@
       "Bash(npm install)",
       "Bash(rm:*)",
       "Bash(npm install:*)",
-      "Bash(npm run:*)"
+      "Bash(npm run:*)",
+      "Bash(aws dynamodb list-tables:*)"
     ],
     "deny": [],
     "ask": []

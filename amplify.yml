@@ -6,7 +6,6 @@ backend:
         - npm ci --cache .npm --prefer-offline
         - cd amplify/functions/counter-api && npm ci
         - cd ../../..
-        - npx cdk bootstrap aws://$AWS_ACCOUNT_ID/$AWS_DEFAULT_REGION || true
         - npx ampx pipeline-deploy --branch $AWS_BRANCH --app-id $AWS_APP_ID
 frontend:
   phases:

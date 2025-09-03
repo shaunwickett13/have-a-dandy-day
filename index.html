@@ -232,9 +232,38 @@
             }
 
             function startExperience() {
-                addClass(document.body, "active")
-                wait(1000).then(() => addClass("#splash", "hide"))
-                getAudio().play();
+                // Slide out controls
+                addClass("#control-panel", "sliding-out")
+                addClass("#additional", "sliding-out")
+                
+                // Show countdown after controls slide out
+                wait(750).then(() => {
+                    removeClass("#countdown-container", "hide")
+                    const countdownNumber = node("#countdown-number")
+                    
+                    // Start countdown
+                    let count = 3
+                    countdownNumber.innerText = count
+                    
+                    const countdownInterval = setInterval(() => {
+                        count--
+                        if (count > 0) {
+                            // Re-trigger animation for each number
+                            countdownNumber.style.animation = 'none'
+                            void countdownNumber.offsetHeight // Force reflow
+                            countdownNumber.style.animation = 'countdownPulse 1s ease-out'
+                            countdownNumber.innerText = count
+                        } else {
+                            clearInterval(countdownInterval)
+                            
+                            // Start the actual experience
+                            addClass("#countdown-container", "hide")
+                            addClass(document.body, "active")
+                            wait(1000).then(() => addClass("#splash", "hide"))
+                            getAudio().play();
+                        }
+                    }, 1000)
+                })
                 if (!isLocalhost) {
                     api.incrementButtonCount()
                 }
@@ -270,6 +299,20 @@
                 const audio = getAudio()
                 audio.pause()
                 audio.currentTime = 0
+                
+                // Remove sliding-out classes
+                removeClass("#control-panel", "sliding-out")
+                removeClass("#additional", "sliding-out")
+                
+                // Add zooming-in animation classes
+                addClass("#control-panel", "zooming-in")
+                addClass("#additional", "zooming-in")
+                
+                // Remove zoom-in classes after animation completes
+                setTimeout(() => {
+                    removeClass("#control-panel", "zooming-in")
+                    removeClass("#additional", "zooming-in")
+                }, 500)
             }
 
             addEventListener("load", () => {
@@ -347,6 +390,10 @@
 </head>
 <body>
     <main id="splash" class="background-container">
+        <div id="countdown-container" class="hide">
+            <div id="countdown-text">Sound on...<br/><br/>The experience is starting <br/><br/></div>
+            <div id="countdown-number"></div>
+        </div>
         <nav id="control-panel" class="hide">
             <button id="start-button">click for dandy day</button>
             <div id="additional">

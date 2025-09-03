@@ -1,0 +1,33 @@
+{
+  "name": "have-a-dandy-day",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "sandbox": "npx ampx sandbox",
+    "deploy": "npx ampx generate outputs --app-id $APP_ID --branch $BRANCH --outputs-format json --outputs-out-dir . && node scripts/update-api-config.js",
+    "update-api-config": "node scripts/update-api-config.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shaunwickett13/have-a-dandy-day.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shaunwickett13/have-a-dandy-day/issues"
+  },
+  "homepage": "https://github.com/shaunwickett13/have-a-dandy-day#readme",
+  "devDependencies": {
+    "@aws-amplify/backend": "^1.16.1",
+    "@aws-amplify/backend-cli": "^1.8.0",
+    "aws-cdk-lib": "^2.204.0",
+    "constructs": "^10.4.2",
+    "esbuild": "^0.25.9",
+    "tsx": "^4.20.5",
+    "typescript": "^5.9.2"
+  }
+}

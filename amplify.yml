@@ -10,7 +10,9 @@ backend:
 frontend:
   phases:
     build:
-      commands: []
+      commands:
+        - npx ampx generate outputs --branch $AWS_BRANCH --app-id $AWS_APP_ID --outputs-format json --outputs-out-dir .
+        - node scripts/update-api-config.js
   artifacts:
     baseDirectory: /
     files:

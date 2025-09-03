@@ -7,7 +7,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "sandbox": "npx ampx sandbox",
-    "deploy": "npx ampx generate outputs --app-id $APP_ID --branch $BRANCH --outputs-format json --outputs-out-dir . && node scripts/update-api-config.js",
+    "deploy": "npx ampx generate outputs --app-id $APP_ID --branch $BRANCH --format json --out-dir . && node scripts/update-api-config.js",
     "update-api-config": "node scripts/update-api-config.js"
   },
   "repository": {

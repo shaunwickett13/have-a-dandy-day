@@ -308,6 +308,8 @@ body.active #control-panel {
 	font-size: 6rem;
 	color: var(--colorwhite-hex);
 	width: initial !important;
+    font-family: "Comfortaa", sans-serif;
+    font-weight: bold;
 }
 
 #odometer + p {
@@ -359,7 +361,9 @@ body.active #control-panel {
 	z-index: 2;
 	top: -200%;
 	transition: top 0.5s ease-in-out;
-	line-height: 1.1;
+    line-height: 1.2;
+    font-family: "Grandstander", Times, serif;
+    border-radius: 1rem;
 }
 
 #quote-section.show-quote > blockquote {

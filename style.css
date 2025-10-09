@@ -623,7 +623,7 @@ body.active #billboard {
 }
 
 .word.focus {
-    text-shadow: 4px 4px 8px black;
+    text-shadow: 5px 5px 10px black;
 }
 
 #grass {

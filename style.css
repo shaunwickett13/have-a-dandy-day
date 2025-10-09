@@ -615,23 +615,15 @@ body.active #billboard {
     word-spacing: 0.5rem;
     font-family: 'Ranchers', 'Comfortaa', sans-serif;
 	animation: rainbow 5s ease-in-out infinite alternate;
+    text-shadow: 2px 2px 4px black;
 }
 
 .word {
 	transition: text-shadow 0.5s ease-in-out, font-size 0.5s ease-in-out;
-	text-shadow: 0 0 5px rgba(255, 255, 255, 0.25);
 }
 
 .word.focus {
-	--glow-size: 0.05rem;
-	font-size: 100%;
-    text-shadow:
-			0 0 calc(var(--glow-size)) #fff,
-			0 0 calc(var(--glow-size) * 2) #fff,
-			0 0 calc(var(--glow-size) * 3) rgba(255, 215, 0, 0.25),
-			0 0 calc(var(--glow-size) * 4) rgba(255, 215, 0, 0.25),
-			0 0 calc(var(--glow-size) * 5) rgba(255, 215, 0, 0.25),
-			0 0 calc(var(--glow-size) * 6) rgba(255, 215, 0, 0.25);
+    text-shadow: 4px 4px 8px black;
 }
 
 #grass {

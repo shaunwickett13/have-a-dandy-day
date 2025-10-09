@@ -304,7 +304,7 @@ body.active #control-panel {
 }
 
 #odometer {
-	text-shadow: 0 0 5px black;
+	text-shadow: 0 0 5px black, 0 0 5px rgba(var(--colorwhite-rgb), 0.4), 0 0 10px rgba(var(--colorwhite-rgb), 0.2);
 	font-size: 6rem;
 	color: var(--colorwhite-hex);
 	width: initial !important;

@@ -33,6 +33,7 @@
 
     <script src="api-config.js"></script>
     <script src="https://github.hubspot.com/odometer/odometer.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
     <script>
         (() => {
             class QuoteProvider {
@@ -280,9 +281,11 @@
                 }
             }
 
+            let confettiInterval = null
+
             function handleAudioTimeUpdate() {
                 const audioSampleTolerance = 500
-                const fireworkLaunchTimeSeconds = 25
+                const confettiLaunchTimeSeconds = 25
                 const { currentTime } = getAudio()
 
                 for (const [time, selector] of focusSchedule) {
@@ -293,33 +296,52 @@
                     }
                 }
 
-                if (currentTime >= fireworkLaunchTimeSeconds && nodes(".firework").length === 0) {
-                    for (let i = 0; i < 7; i++) {
-                        const firework = document.createElement("div")
-                        addClass(firework, "firework")
-                        addClass(firework, `f${i + 1}`)
-                        document.body.appendChild(firework)
+                if (currentTime >= confettiLaunchTimeSeconds && confettiInterval === null) {
+                    const duration = 5 * 1000
+                    const animationEnd = Date.now() + duration
+                    const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 4 }
+
+                    function randomInRange(min, max) {
+                        return Math.random() * (max - min) + min
                     }
+
+                    confettiInterval = setInterval(() => {
+                        const timeLeft = animationEnd - Date.now()
+
+                        if (timeLeft <= 0) {
+                            clearInterval(confettiInterval)
+                            confettiInterval = null
+                            return
+                        }
+
+                        const particleCount = 50 * (timeLeft / duration)
+
+                        confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.15, 0.45), y: randomInRange(0.1, 0.35) } })
+                        confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.55, 0.85), y: randomInRange(0.1, 0.35) } })
+                    }, 500)
                 }
             }
 
             function stopExperience() {
                 removeClass(document.body, "active")
                 removeClass("#splash", "hide")
-                nodes('.firework').forEach(e => e.remove());
+
+                if (confettiInterval !== null) {
+                    clearInterval(confettiInterval)
+                    confettiInterval = null
+                }
+                confetti.reset()
+
                 const audio = getAudio()
                 audio.pause()
                 audio.currentTime = 0
-                
-                // Remove sliding-out classes
+
                 removeClass("#control-panel", "sliding-out")
                 removeClass("#additional", "sliding-out")
-                
-                // Add zooming-in animation classes
+
                 addClass("#control-panel", "zooming-in")
                 addClass("#additional", "zooming-in")
-                
-                // Remove zoom-in classes after animation completes
+
                 setTimeout(() => {
                     removeClass("#control-panel", "zooming-in")
                     removeClass("#additional", "zooming-in")

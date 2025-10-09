@@ -27,8 +27,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
    - Displays count using Odometer library for animated numbers
 
 4. **Animation System**
-   - CSS animations in `style.css:829-1183` handle all visual effects
-   - Keyframe animations for: fireworks, dancing, rainbow colors, clouds drifting, sun rotating, grass swaying
+   - CSS animations in `style.css` handle visual effects
+   - Keyframe animations for: dancing, rainbow colors, clouds drifting, sun rotating, grass swaying
+   - Canvas-confetti library handles firework/confetti effects (triggered at 25 seconds)
    - JavaScript controls animation timing and state transitions
 
 ### State Management
